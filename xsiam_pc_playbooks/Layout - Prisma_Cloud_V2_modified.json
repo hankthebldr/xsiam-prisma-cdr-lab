@@ -1,0 +1,826 @@
+{
+	"cacheVersn": 0,
+	"close": null,
+	"definitionId": "",
+	"description": "",
+	"detached": false,
+	"details": null,
+	"detailsV2": {
+		"TypeName": "",
+		"tabs": [
+			{
+				"hidden": false,
+				"id": "gfrgdzfgei",
+				"name": "Alert Info",
+				"sections": [
+					{
+						"displayType": "ROW",
+						"h": 3,
+						"hideName": false,
+						"i": "gfrgdzfgei-aa0d7560-b338-11e9-b119-d93d58ec6fe8",
+						"items": [
+							{
+								"endCol": 2,
+								"fieldId": "name",
+								"height": 26,
+								"id": "e93de130-fa6d-11ee-be26-bfc63bb73355",
+								"index": 0,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "type",
+								"height": 26,
+								"id": "0acff760-b339-11e9-b119-d93d58ec6fe8",
+								"index": 1,
+								"listId": "gfrgdzfgei-aa0d7560-b338-11e9-b119-d93d58ec6fe8",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "severity",
+								"height": 26,
+								"id": "0d2d2140-b339-11e9-b119-d93d58ec6fe8",
+								"index": 2,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "owner",
+								"height": 26,
+								"id": "108218a0-b339-11e9-b119-d93d58ec6fe8",
+								"index": 3,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "sourceinstance",
+								"height": 26,
+								"id": "19d3ced0-b339-11e9-b119-d93d58ec6fe8",
+								"index": 4,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "sourcebrand",
+								"height": 26,
+								"id": "21f23520-b339-11e9-b119-d93d58ec6fe8",
+								"index": 5,
+								"listId": "gfrgdzfgei-aa0d7560-b338-11e9-b119-d93d58ec6fe8",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "playbookid",
+								"height": 26,
+								"id": "282bfcf0-b339-11e9-b119-d93d58ec6fe8",
+								"index": 6,
+								"sectionItemType": "field",
+								"startCol": 0
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Alert Details",
+						"static": false,
+						"w": 1,
+						"x": 0,
+						"y": 0
+					},
+					{
+						"h": 1,
+						"hideName": false,
+						"i": "gfrgdzfgei-ba344900-b338-11e9-b119-d93d58ec6fe8",
+						"items": [],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Work Plan",
+						"static": false,
+						"type": "workplan",
+						"w": 1,
+						"x": 0,
+						"y": 6
+					},
+					{
+						"description": "",
+						"displayType": "ROW",
+						"h": 3,
+						"hideName": false,
+						"i": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+						"items": [
+							{
+								"endCol": 2,
+								"fieldId": "prisma_account_name",
+								"height": 26,
+								"id": "4b4a9670-fa6e-11ee-be26-bfc63bb73355",
+								"index": 0,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "accountid",
+								"height": 26,
+								"id": "f58b61a0-0536-11ef-822d-d3ca67164322",
+								"index": 1,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "prismacloudid",
+								"height": 26,
+								"id": "7a4369a0-f8b8-11e9-a470-b7537b797c27",
+								"index": 2,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "prismacloudtime",
+								"height": 26,
+								"id": "97ada000-f8b8-11e9-a470-b7537b797c27",
+								"index": 3,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "prismacloudstatus",
+								"height": 26,
+								"id": "7fc5c850-f8b8-11e9-a470-b7537b797c27",
+								"index": 4,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "firstseen",
+								"height": 26,
+								"id": "a5bd1cf0-f766-11e9-8c27-6359f1848ae7",
+								"index": 5,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "lastseen",
+								"height": 26,
+								"id": "a6b97e50-f766-11e9-8c27-6359f1848ae7",
+								"index": 6,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "riskscore",
+								"height": 26,
+								"id": "b062f170-f766-11e9-8c27-6359f1848ae7",
+								"index": 7,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "riskrating",
+								"height": 26,
+								"id": "aa6fa880-f766-11e9-8c27-6359f1848ae7",
+								"index": 8,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 2,
+								"fieldId": "details",
+								"height": 52,
+								"id": "df009280-fa6d-11ee-be26-bfc63bb73355",
+								"index": 9,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "region",
+								"height": 26,
+								"id": "5240f780-fa6e-11ee-be26-bfc63bb73355",
+								"index": 0,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "prisma_region",
+								"height": 26,
+								"id": "53b45da0-fa6e-11ee-be26-bfc63bb73355",
+								"index": 1,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "prisma_cloud_status",
+								"height": 26,
+								"id": "5db76270-fa6e-11ee-be26-bfc63bb73355",
+								"index": 2,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "sourceinstance",
+								"height": 26,
+								"id": "90011280-fa6e-11ee-be26-bfc63bb73355",
+								"index": 3,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "accountgroups",
+								"height": 26,
+								"id": "a645c180-fa6e-11ee-be26-bfc63bb73355",
+								"index": 4,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "hostname",
+								"height": 26,
+								"id": "a3b0dc10-fcae-11ee-91fa-858a924a9b1e",
+								"index": 4,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudproject",
+								"height": 26,
+								"id": "a87f2d00-fcae-11ee-91fa-858a924a9b1e",
+								"index": 5,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudresourcetype",
+								"height": 26,
+								"id": "b1cfd1c0-fcae-11ee-91fa-858a924a9b1e",
+								"index": 6,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudprovider",
+								"height": 26,
+								"id": "b78af3b0-fcae-11ee-91fa-858a924a9b1e",
+								"index": 7,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "external_id",
+								"height": 26,
+								"id": "bd586520-fcae-11ee-91fa-858a924a9b1e",
+								"index": 8,
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 4,
+								"fieldId": "statusreason",
+								"height": 26,
+								"id": "0e2688a0-9d8d-11ee-a927-75775b2f32ea",
+								"index": 9,
+								"listId": "gfrgdzfgei-57cfecc0-f766-11e9-8c27-6359f1848ae7",
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 4,
+								"fieldId": "regionid",
+								"height": 26,
+								"id": "10efdcf0-0537-11ef-822d-d3ca67164322",
+								"index": 10,
+								"sectionItemType": "field",
+								"startCol": 2
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Prisma Cloud Alert Summary",
+						"static": false,
+						"w": 2,
+						"x": 1,
+						"y": 0
+					},
+					{
+						"displayType": "ROW",
+						"h": 4,
+						"hideName": false,
+						"i": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+						"items": [
+							{
+								"dropEffect": "move",
+								"endCol": 4,
+								"fieldId": "alertrules",
+								"height": 52,
+								"id": "cc586cf0-0249-11ef-9d8e-e93321e296ae",
+								"index": 0,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Policy Rules",
+						"static": false,
+						"w": 2,
+						"x": 1,
+						"y": 3
+					},
+					{
+						"displayType": "ROW",
+						"h": 3,
+						"hideName": false,
+						"i": "gfrgdzfgei-a6aaa8d0-03b9-11ef-97d0-f7017de5eac7",
+						"items": [
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policydescription",
+								"height": 52,
+								"id": "53c6f270-0249-11ef-9d8e-e93321e296ae",
+								"index": 0,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policy_recommendation",
+								"height": 52,
+								"id": "71705f40-024a-11ef-9d8e-e93321e296ae",
+								"index": 1,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policyrecommendation",
+								"height": 52,
+								"id": "94ffb970-0249-11ef-9d8e-e93321e296ae",
+								"index": 2,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policyrecommendation",
+								"height": 52,
+								"id": "505f3660-0249-11ef-9d8e-e93321e296ae",
+								"index": 3,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policydetails",
+								"height": 26,
+								"id": "52a4e0a0-0249-11ef-9d8e-e93321e296ae",
+								"index": 4,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policy_type",
+								"height": 26,
+								"id": "49cdb1a0-0249-11ef-9d8e-e93321e296ae",
+								"index": 5,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policy_remediable",
+								"height": 26,
+								"id": "ae7276e0-0249-11ef-9d8e-e93321e296ae",
+								"index": 6,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policyuri",
+								"height": 26,
+								"id": "4bfd14c0-0249-11ef-9d8e-e93321e296ae",
+								"index": 7,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policydeleted",
+								"height": 26,
+								"id": "54d30b40-0249-11ef-9d8e-e93321e296ae",
+								"index": 7,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policytype",
+								"height": 26,
+								"id": "4aee63e0-0249-11ef-9d8e-e93321e296ae",
+								"index": 8,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policyactions",
+								"height": 26,
+								"id": "55be0780-0249-11ef-9d8e-e93321e296ae",
+								"index": 9,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 2,
+								"fieldId": "policyid",
+								"height": 26,
+								"id": "51690540-0249-11ef-9d8e-e93321e296ae",
+								"index": 10,
+								"listId": "gfrgdzfgei-2c7889e0-0249-11ef-9d8e-e93321e296ae",
+								"sectionItemType": "field",
+								"startCol": 0
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Policy Details",
+						"static": false,
+						"w": 1,
+						"x": 0,
+						"y": 3
+					}
+				],
+				"type": "custom"
+			},
+			{
+				"hidden": false,
+				"id": "wtpmuhlejj",
+				"name": "Asset Info",
+				"sections": [
+					{
+						"displayType": "ROW",
+						"h": 3,
+						"hideName": false,
+						"i": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+						"items": [
+							{
+								"endCol": 2,
+								"fieldId": "hostname",
+								"height": 26,
+								"id": "fc784920-fcac-11ee-91fa-858a924a9b1e",
+								"index": 0,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "projectid",
+								"height": 26,
+								"id": "131ca450-fcad-11ee-91fa-858a924a9b1e",
+								"index": 1,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudproject",
+								"height": 26,
+								"id": "17458d80-fcad-11ee-91fa-858a924a9b1e",
+								"index": 2,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudaccountid",
+								"height": 26,
+								"id": "26890600-fcad-11ee-91fa-858a924a9b1e",
+								"index": 3,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "prisma_cloud_account_owners",
+								"height": 26,
+								"id": "27613d90-fcad-11ee-91fa-858a924a9b1e",
+								"index": 4,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloud_labels",
+								"height": 26,
+								"id": "2b4862d0-fcad-11ee-91fa-858a924a9b1e",
+								"index": 5,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudprovider",
+								"height": 26,
+								"id": "2fec6f70-fcad-11ee-91fa-858a924a9b1e",
+								"index": 6,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "cloudresourcelist",
+								"height": 26,
+								"id": "327a6d50-fcad-11ee-91fa-858a924a9b1e",
+								"index": 7,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 4,
+								"fieldId": "cloudresourcetype",
+								"height": 26,
+								"id": "35289d60-fcad-11ee-91fa-858a924a9b1e",
+								"index": 8,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 4,
+								"fieldId": "cloudresourcesubtype",
+								"height": 26,
+								"id": "33527dd0-fcad-11ee-91fa-858a924a9b1e",
+								"index": 9,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 4,
+								"fieldId": "systemdefault",
+								"height": 26,
+								"id": "32385ef0-0537-11ef-822d-d3ca67164322",
+								"index": 11,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "cloudidentitytype",
+								"height": 26,
+								"id": "2a753450-fcad-11ee-91fa-858a924a9b1e",
+								"index": 0,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 2
+							},
+							{
+								"endCol": 6,
+								"fieldId": "accountgroups",
+								"height": 26,
+								"id": "ef275c60-fcad-11ee-91fa-858a924a9b1e",
+								"index": 1,
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"endCol": 6,
+								"fieldId": "external_id",
+								"height": 26,
+								"id": "fe19a7a0-fcad-11ee-91fa-858a924a9b1e",
+								"index": 1,
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "resourcecloudtype",
+								"height": 26,
+								"id": "8577b260-fcad-11ee-91fa-858a924a9b1e",
+								"index": 2,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "referencedresourceid",
+								"height": 26,
+								"id": "84485a20-fcad-11ee-91fa-858a924a9b1e",
+								"index": 3,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "referencedresourcename",
+								"height": 26,
+								"id": "83732fd0-fcad-11ee-91fa-858a924a9b1e",
+								"index": 4,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "uai_id",
+								"height": 26,
+								"id": "6cbe32d0-fcad-11ee-91fa-858a924a9b1e",
+								"index": 5,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"endCol": 6,
+								"fieldId": "resourcetype",
+								"height": 26,
+								"id": "1bb8a2c0-0537-11ef-822d-d3ca67164322",
+								"index": 6,
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"endCol": 6,
+								"fieldId": "resourceurl",
+								"height": 26,
+								"id": "1d1573a0-0537-11ef-822d-d3ca67164322",
+								"index": 7,
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"dropEffect": "move",
+								"endCol": 6,
+								"fieldId": "prisma_resource_name",
+								"height": 26,
+								"id": "1fe58390-0537-11ef-822d-d3ca67164322",
+								"index": 8,
+								"listId": "wtpmuhlejj-ed0a3e30-fcac-11ee-91fa-858a924a9b1e",
+								"sectionItemType": "field",
+								"startCol": 4
+							},
+							{
+								"endCol": 6,
+								"fieldId": "detectedexternalips",
+								"height": 26,
+								"id": "ee2d1830-0550-11ef-b878-a51652e63382",
+								"index": 10,
+								"sectionItemType": "field",
+								"startCol": 4
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Asset Details",
+						"static": false,
+						"w": 3,
+						"x": 0,
+						"y": 0
+					},
+					{
+						"description": "this section will hold the Prisma asset findings and iam data",
+						"displayType": "ROW",
+						"h": 5,
+						"hideName": false,
+						"i": "wtpmuhlejj-ea689230-0247-11ef-9d8e-e93321e296ae",
+						"items": [
+							{
+								"endCol": 6,
+								"fieldId": "prismacloudfindingsresults",
+								"height": 106,
+								"id": "139dbc20-0248-11ef-9d8e-e93321e296ae",
+								"index": 0,
+								"sectionItemType": "field",
+								"startCol": 0
+							},
+							{
+								"endCol": 6,
+								"fieldId": "prismacloudiamresults",
+								"height": 106,
+								"id": "32455480-0248-11ef-9d8e-e93321e296ae",
+								"index": 1,
+								"sectionItemType": "field",
+								"startCol": 0
+							}
+						],
+						"maxW": 3,
+						"minH": 1,
+						"moved": false,
+						"name": "Asset Findings and IAM",
+						"static": false,
+						"w": 3,
+						"x": 0,
+						"y": 3
+					}
+				],
+				"type": "custom"
+			},
+			{
+				"id": "warRoom",
+				"name": "War Room",
+				"type": "warRoom"
+			},
+			{
+				"id": "workPlan",
+				"name": "Work Plan",
+				"type": "workPlan"
+			}
+		]
+	},
+	"edit": null,
+	"fromServerVersion": "6.10.0",
+	"group": "incident",
+	"id": "03687761-5986-4346-8605-d3c31606a83a",
+	"indicatorsDetails": null,
+	"indicatorsQuickView": null,
+	"itemVersion": "4.3.3",
+	"locked": false,
+	"mobile": null,
+	"name": "Prisma Cloud V2 modified",
+	"packID": "",
+	"packName": "Prisma Cloud by Palo Alto Networks",
+	"propagationLabels": [],
+	"quickView": null,
+	"quickViewV2": null,
+	"system": false,
+	"toServerVersion": "99.99.99",
+	"version": -1
+}

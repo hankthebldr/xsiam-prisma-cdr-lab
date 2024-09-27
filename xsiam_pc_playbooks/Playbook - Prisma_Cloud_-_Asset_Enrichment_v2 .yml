@@ -1,0 +1,1073 @@
+id: e1294437-4f1e-4264-83db-39eb0962787c
+version: 22
+contentitemexportablefields:
+  contentitemfields:
+    packID: ""
+    packName: Prisma Cloud by Palo Alto Networks
+    itemVersion: 4.3.3
+    fromServerVersion: 6.10.0
+    toServerVersion: ""
+    definitionid: ""
+    prevname: ""
+vcShouldKeepItemLegacyProdMachine: false
+name: Prisma Cloud - Asset Enrichment v2
+description: |-
+  This playbook handles alerts of internet exposed services and detect potential risky configurations that can make your cloud environment vulnerable to attacks, and
+  alerts of unusual network and user activity for all users, and are especially critical for privileged users and assumed roles where detecting unusual activity may indicate the first steps in a potential misuse or account compromise.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: 4f11a4c9-0954-4f33-8c2f-3f0c56f2a5a2
+    type: start
+    task:
+      id: 4f11a4c9-0954-4f33-8c2f-3f0c56f2a5a2
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "1"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -430
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "1":
+    id: "1"
+    taskid: ae031fc1-70ad-4363-82a6-93475f9024fb
+    type: title
+    task:
+      id: ae031fc1-70ad-4363-82a6-93475f9024fb
+      version: -1
+      name: Enrichment
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "33"
+      - "47"
+      - "51"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -300
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "11":
+    id: "11"
+    taskid: 6c232656-52c6-4b24-8918-30776fa31077
+    type: playbook
+    task:
+      id: 6c232656-52c6-4b24-8918-30776fa31077
+      version: -1
+      name: Cloud Enrichment - Generic
+      description: |2-
+
+        ## Generic Cloud Enrichment Playbook
+
+        The **Cloud Enrichment - Generic Playbook** is designed to unify all the relevant playbooks concerning the enrichment of information in the cloud. It provides a standardized approach to enriching information in cloud environments.
+
+        ### Supported Blocks
+
+        1. **Cloud IAM Enrichment - Generic**
+           - Enriches information related to Identity and Access Management (IAM) in the cloud.
+
+        2. **Cloud Compute Enrichment - Generic**
+           - Enriches information related to cloud compute resources.
+
+        The playbook supports a single CSP enrichment at a time.
+      playbookName: Cloud Enrichment - Generic
+      type: playbook
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      cloudProvider:
+        simple: ${alert.cloudprovider.[0]}
+      instanceID:
+        simple: ${PrismaCloud.Alert.resource.id}
+      instanceName:
+        simple: ${PrismaCloud.Alert.resource.account}
+      region:
+        simple: ${PrismaCloud.Alert.resource.regionId}
+      username:
+        simple: ${alert.usernames}
+    separatecontext: true
+    continueonerrortype: ""
+    loop:
+      iscommand: false
+      exitCondition: ""
+      wait: 1
+      max: 100
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 40
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "33":
+    id: "33"
+    taskid: 574da260-b4f7-430c-87ef-ced24a6df298
+    type: regular
+    task:
+      id: 574da260-b4f7-430c-87ef-ced24a6df298
+      version: -1
+      name: Prisma alert enrichment
+      description: Gets the details of an alert based on the alert ID.
+      script: '|||prisma-cloud-alert-get-details'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "35"
+      - "40"
+      - "11"
+    scriptarguments:
+      alert_id:
+        simple: ${alert.external_id}
+      detailed:
+        simple: "true"
+      using:
+        simple: ${alert.sourceInstance}
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": -150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping:
+    - incidentfield: First Seen
+      output:
+        simple: ${PrismaCloud.Alert.firstSeen}
+    - incidentfield: Last Seen
+      output:
+        simple: ${PrismaCloud.Alert.lastSeen}
+    - incidentfield: Alert Rules
+      output:
+        simple: ${PrismaCloud.Alert.alertRules}
+    - incidentfield: Account Name
+      output:
+        simple: ${PrismaCloud.Alert.resource.account}
+    - incidentfield: Account ID
+      output:
+        simple: ${PrismaCloud.Alert.resource.accountId}
+    - incidentfield: Referenced Resource Name
+      output:
+        simple: ${PrismaCloud.Alert.resource.rrn}
+    - incidentfield: Region ID
+      output:
+        simple: ${PrismaCloud.Alert.resource.regionId}
+    - incidentfield: Region
+      output:
+        simple: ${alert.prisma_region.[0]}
+    - incidentfield: Resource Type
+      output:
+        simple: ${PrismaCloud.Alert.resource.resourceType}
+    - incidentfield: System Default Policy
+      output:
+        simple: ${PrismaCloud.Alert.policy.systemDefault}
+    - incidentfield: Resource URL
+      output:
+        simple: ${PrismaCloud.Alert.resource.url}
+    - incidentfield: Last Seen
+      output:
+        simple: ${PrismaCloud.Alert.lastSeen}
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "35":
+    id: "35"
+    taskid: 7265dfe6-a8a7-4b86-8066-c118ba872dbe
+    type: condition
+    task:
+      id: 7265dfe6-a8a7-4b86-8066-c118ba872dbe
+      version: -1
+      name: Host RRN has received from Prisma?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "36"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: PrismaCloud.Alert.resource.rrn
+            iscontext: true
+          right:
+            value: {}
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 40
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "36":
+    id: "36"
+    taskid: 84ddcd55-108f-4bcb-8608-6287ad05bffb
+    type: regular
+    task:
+      id: 84ddcd55-108f-4bcb-8608-6287ad05bffb
+      version: -1
+      name: Get host findings
+      description: Get resource host finding list.
+      script: '|||prisma-cloud-host-finding-list'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "55"
+    scriptarguments:
+      all_results:
+        simple: "true"
+      rrn:
+        simple: ${PrismaCloud.Alert.resource.rrn}
+      using:
+        simple: ${alert.sourceInstance}
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 220
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "40":
+    id: "40"
+    taskid: 8bab5ef9-fbad-4e40-8750-f235d3e0a15d
+    type: condition
+    task:
+      id: 8bab5ef9-fbad-4e40-8750-f235d3e0a15d
+      version: -1
+      name: Is Part of Alert Rule?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "41"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: PrismaCloud.Alert.alertRules
+            iscontext: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 1320,
+          "y": 40
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "41":
+    id: "41"
+    taskid: 9ea67dc5-869e-496c-8fb1-bf3f5af73632
+    type: regular
+    task:
+      id: 9ea67dc5-869e-496c-8fb1-bf3f5af73632
+      version: -1
+      name: Map Alert Rules
+      description: Accepts a json object and returns a markdown.
+      scriptName: JsonToTable
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      extend-context:
+        simple: prismaalertrules=
+      value:
+        simple: ${PrismaCloud.Alert.alertRules}
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 1320,
+          "y": 220
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping:
+    - incidentfield: Alert Rules
+      output:
+        simple: ${prismaalertrules}
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "47":
+    id: "47"
+    taskid: f116489b-90bf-4f92-8353-6c5cc912b5ae
+    type: regular
+    task:
+      id: f116489b-90bf-4f92-8353-6c5cc912b5ae
+      version: -1
+      name: Check for IAM permisions
+      description: Get permission list. You must provide either "query" or "next_token".
+      script: '|||prisma-cloud-permission-list'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "48"
+    scriptarguments:
+      query:
+        simple: config from iam where source.cloud.resource.name = '${alert.prisma_resource_name}'
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -270,
+          "y": -120
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "48":
+    id: "48"
+    taskid: b464882f-d3d6-4c4d-8785-378cb6254615
+    type: condition
+    task:
+      id: b464882f-d3d6-4c4d-8785-378cb6254615
+      version: -1
+      name: any IAM results?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "58"
+      "yes":
+      - "49"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: greaterThan
+          left:
+            value:
+              complex:
+                root: PrismaCloud
+                accessor: Permission
+                transformers:
+                - operator: count
+            iscontext: true
+          right:
+            value:
+              simple: "1"
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -270,
+          "y": 60
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "49":
+    id: "49"
+    taskid: da5d05e5-dedc-43ca-8e89-849bfd99d162
+    type: regular
+    task:
+      id: da5d05e5-dedc-43ca-8e89-849bfd99d162
+      version: -1
+      name: Prepare Array
+      description: Set a value in context under the key you entered.
+      scriptName: Set
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "50"
+    scriptarguments:
+      key:
+        simple: prisma_permissions_array
+      value:
+        complex:
+          root: PrismaCloud.Permission
+          filters:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: PrismaCloud.Permission
+                iscontext: true
+          transformers:
+          - operator: splice
+            args:
+              deleteCount:
+                value:
+                  simple: "1"
+              index:
+                value:
+                  simple: "0"
+              item: {}
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -460,
+          "y": 260
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "50":
+    id: "50"
+    taskid: e4998d2f-4a5f-4df2-8c01-49ca81503e50
+    type: regular
+    task:
+      id: e4998d2f-4a5f-4df2-8c01-49ca81503e50
+      version: -1
+      name: Populate IAM to grid
+      description: Creates a Grid table from items or key-value pairs.
+      scriptName: SetGridField
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      columns:
+        simple: "Source Service,Source Resource,Granted By Entity Type,Granted By
+          Entity \nName,Granted By Policy Type,Granted By Policy Name,Source Cloud
+          Account,Dest Cloud Account,Action,Destination,Last Access"
+      context_path:
+        simple: prisma_permissions_array
+      grid_id:
+        simple: prismacloudiamresults
+      keys:
+        simple: sourceCloudServiceName,sourceResourceName,grantedByCloudEntityType,grantedByCloudEntityName,grantedByCloudPolicyType,grantedByCloudPolicyName,sourceCloudAccount,destCloudAccount,effectiveActionName,destResourceType,lastAccessStatus
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -460,
+          "y": 440
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "51":
+    id: "51"
+    taskid: 8a7c45e5-68c6-4bcf-8ced-d4489f6ac2ae
+    type: title
+    task:
+      id: 8a7c45e5-68c6-4bcf-8ced-d4489f6ac2ae
+      version: -1
+      name: Asset Public IP
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "52"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -1270,
+          "y": -120
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "52":
+    id: "52"
+    taskid: 21cf32e9-cd74-48b4-890d-eed8564c17a3
+    type: condition
+    task:
+      id: 21cf32e9-cd74-48b4-890d-eed8564c17a3
+      version: -1
+      name: Check CSP type
+      description: ' '
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      azure:
+      - "53"
+      gcp:
+      - "54"
+    separatecontext: false
+    conditions:
+    - label: aws
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              complex:
+                root: alert.cloudprovider
+                accessor: '[0]'
+                transformers:
+                - operator: toLowerCase
+            iscontext: true
+          right:
+            value:
+              simple: aws
+    - label: gcp
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              complex:
+                root: alert.cloudprovider
+                accessor: '[0]'
+                transformers:
+                - operator: toLowerCase
+            iscontext: true
+          right:
+            value:
+              simple: gcp
+    - label: azure
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              complex:
+                root: alert.cloudprovider
+                accessor: '[0]'
+                transformers:
+                - operator: toLowerCase
+            iscontext: true
+          right:
+            value:
+              simple: azure
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -1270,
+          "y": 60
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "53":
+    id: "53"
+    taskid: 44dc0c6f-9372-4d6e-8d01-7bc27264986f
+    type: regular
+    task:
+      id: 44dc0c6f-9372-4d6e-8d01-7bc27264986f
+      version: -1
+      name: Check for Public IP on asset
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with "config". When
+        no absolute time nor relative time arguments are provided, the default time
+        range is all times.
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      iscommand: true
+      brand: ""
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'azure-vm-list' AND json.rule
+          = ['properties.networkProfile'].networkInterfaces[*].ipConfigurations[*].publicIpAddress
+          exists and ['properties.osProfile'].computerName equals "${alert.prisma_resource_name}"
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -1000,
+          "y": 240
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "54":
+    id: "54"
+    taskid: eb50534d-57ca-4739-895b-f793326fedf1
+    type: regular
+    task:
+      id: eb50534d-57ca-4739-895b-f793326fedf1
+      version: -1
+      name: Check for Public IP on asset
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with "config". When
+        no absolute time nor relative time arguments are provided, the default time
+        range is all times.
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      iscommand: true
+      brand: ""
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'gcloud-compute-instances-list'
+          AND json.rule = networkInterfaces[*].accessConfigs[*].natIP size greater
+          than 0 and networkInterfaces[*].accessConfigs[*].natIP none empty and id
+          equals "${alert.prisma_resource_name}"
+    separatecontext: false
+    continueonerror: true
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -1560,
+          "y": 240
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping:
+    - incidentfield: Detected External IPs
+      output:
+        complex:
+          root: PrismaCloud.Config.hasExternalFinding
+          filters:
+          - - operator: isNotEmpty
+              left:
+                value:
+                  simple: PrismaCloud.Config.hasExternalFinding
+                iscontext: true
+    - incidentfield: Detected External IPs
+      output:
+        complex:
+          root: PrismaCloud.Config
+          filters:
+          - - operator: isEmpty
+              left:
+                value:
+                  simple: PrismaCloud.Config.hasExternalFinding
+                iscontext: true
+          accessor: rrn
+          transformers:
+          - operator: concat
+            args:
+              prefix:
+                value:
+                  simple: "No"
+              suffix:
+                value:
+                  simple: Results
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "55":
+    id: "55"
+    taskid: 32e24697-9d07-4442-8508-000d5c89f43f
+    type: condition
+    task:
+      id: 32e24697-9d07-4442-8508-000d5c89f43f
+      version: -1
+      name: are there any findings?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "57"
+      "yes":
+      - "56"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: greaterThanOrEqual
+          left:
+            value:
+              complex:
+                root: PrismaCloud
+                accessor: HostFinding
+                transformers:
+                - operator: count
+            iscontext: true
+          right:
+            value:
+              simple: "1"
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 410
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "56":
+    id: "56"
+    taskid: dca161a2-4777-4209-8a9c-c2c0910a5423
+    type: regular
+    task:
+      id: dca161a2-4777-4209-8a9c-c2c0910a5423
+      version: -1
+      name: Populate findings grid
+      description: Creates a Grid table from items or key-value pairs.
+      scriptName: SetGridField
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      columns:
+        simple: Title,Normalized Name,Source,Type,Score,Severity
+      context_path:
+        simple: PrismaCloud.HostFinding
+      grid_id:
+        simple: prismacloudfindingsresults
+      keys:
+        simple: cveId,score,severity,description,nvdUrl,status
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 1100,
+          "y": 600
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "57":
+    id: "57"
+    taskid: e14ecbe5-8153-4062-8b3e-589c4c8892ec
+    type: regular
+    task:
+      id: e14ecbe5-8153-4062-8b3e-589c4c8892ec
+      version: -1
+      name: Done
+      description: Prints text to war room (Markdown supported)
+      scriptName: Print
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      value:
+        simple: No findings found
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": 690,
+          "y": 600
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "58":
+    id: "58"
+    taskid: 7ed1f5a5-ed19-420a-8585-6f3a16e332b9
+    type: regular
+    task:
+      id: 7ed1f5a5-ed19-420a-8585-6f3a16e332b9
+      version: -1
+      name: Done
+      description: Prints text to war room (Markdown supported)
+      scriptName: Print
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      value:
+        simple: no IAM results
+    separatecontext: false
+    continueonerrortype: ""
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 260
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1125,
+        "width": 3260,
+        "x": -1560,
+        "y": -430
+      }
+    }
+  }
+inputs:
+- key: CreateTicket
+  value:
+    simple: "False"
+  required: false
+  description: Whether to create a ticket in ZenDesk or ServiceNow. Insert True or
+    False
+  playbookInputQuery: null
+- key: StopForRecommendations
+  value:
+    simple: "True"
+  required: false
+  description: ""
+  playbookInputQuery: null
+- key: EarlyContainment
+  value:
+    simple: "True"
+  required: false
+  description: Whether to perform early containment.
+  playbookInputQuery: null
+- key: CloudResponse
+  value:
+    simple: "False"
+  required: false
+  description: Whether to perform cloud response.
+  playbookInputQuery: null
+- key: serviceNowShortDescription
+  value: {}
+  required: false
+  description: A short description of the ticket.
+  playbookInputQuery: null
+- key: serviceNowImpact
+  value: {}
+  required: false
+  description: The impact for the new ticket. Leave empty for ServiceNow default impact.
+  playbookInputQuery: null
+- key: serviceNowUrgency
+  value: {}
+  required: false
+  description: The urgency of the new ticket. Leave empty for ServiceNow default urgency.
+  playbookInputQuery: null
+- key: serviceNowSeverity
+  value: {}
+  required: false
+  description: The severity of the new ticket. Leave empty for ServiceNow default
+    severity.
+  playbookInputQuery: null
+- key: serviceNowTicketType
+  value: {}
+  required: false
+  description: The ServiceNow ticket type. Options are "incident", "problem", "change_request",
+    "sc_request", "sc_task", or "sc_req_item". Default is "incident".
+  playbookInputQuery: null
+- key: serviceNowCategory
+  value: {}
+  required: false
+  description: The category of the ServiceNow ticket.
+  playbookInputQuery: null
+- key: serviceNowAssignmentGroup
+  value: {}
+  required: false
+  description: The group to which to assign the new ticket.
+  playbookInputQuery: null
+- key: ZendeskPriority
+  value: {}
+  required: false
+  description: The urgency with which the ticket should be addressed. Allowed values
+    are "urgent", "high", "normal", or "low".
+  playbookInputQuery: null
+- key: ZendeskRequester
+  value: {}
+  required: false
+  description: The user who requested this ticket.
+  playbookInputQuery: null
+- key: ZendeskStatus
+  value: {}
+  required: false
+  description: The state of the ticket. Allowed values are "new", "open", "pending",
+    "hold", "solved", or "closed".
+  playbookInputQuery: null
+- key: ZendeskSubject
+  value: {}
+  required: false
+  description: The value of the subject field for this ticket.
+  playbookInputQuery: null
+- key: ZendeskTags
+  value: {}
+  required: false
+  description: The array of tags applied to this ticket.
+  playbookInputQuery: null
+- key: ZendeskType
+  value: {}
+  required: false
+  description: The type of this ticket. Allowed values are "problem", "incident",
+    "question", or "task".
+  playbookInputQuery: null
+- key: ZendeskAssigne
+  value: {}
+  required: false
+  description: The agent currently assigned to the ticket.
+  playbookInputQuery: null
+- key: ZendeskCollaborators
+  value: {}
+  required: false
+  description: The users currently CC'ed on the ticket.
+  playbookInputQuery: null
+- key: ZenDeskDescription
+  value: {}
+  required: false
+  description: The ticket description.
+  playbookInputQuery: null
+inputSections:
+- inputs:
+  - CreateTicket
+  - StopForRecommendations
+  name: Alert Management
+  description: |
+    Alert management settings and data,
+- inputs:
+  - EarlyContainment
+  - CloudResponse
+  name: Remediation
+  description: Remediation settings and data, including containment, eradication,
+    and recovery.
+- inputs:
+  - serviceNowShortDescription
+  - serviceNowImpact
+  - serviceNowUrgency
+  - serviceNowSeverity
+  - serviceNowTicketType
+  - serviceNowCategory
+  - serviceNowAssignmentGroup
+  name: Ticket Management- ServiceNow
+  description: Ticket management settings and data for ServiceNow
+- inputs:
+  - ZendeskPriority
+  - ZendeskRequester
+  - ZendeskStatus
+  - ZendeskSubject
+  - ZendeskTags
+  - ZendeskType
+  - ZendeskAssigne
+  - ZendeskCollaborators
+  - ZenDeskDescription
+  name: Ticket Management - ZenDesk
+  description: Ticket management settings and data for ZenDesk
+outputSections:
+- outputs: []
+  name: General (Outputs group)
+  description: Generic group for outputs
+outputs: []
+sourceplaybookid: Prisma Cloud - Network API and Anomaly Incidents

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","enabled":true,"kind":"Service","metadata":{"annotations":{},"name":"dvwa-web-service","namespace":"default"},"spec":{"ports":[{"port":8081,"protocol":"TCP","targetPort":80}],"selector":{"app":"dvwa","tier":"frontend"},"type":"LoadBalancer"}}
+  creationTimestamp: "2024-04-15T22:49:32Z"
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  name: dvwa-web-service
+  namespace: dvwa-docker-lab
+  resourceVersion: "117681752"
+  uid: 31628ca5-404f-4420-a37b-e68f8b5faf6d
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 10.0.231.76
+  clusterIPs:
+  - 10.0.231.76
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 30663
+    port: 8081
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: dvwa
+    tier: frontend
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 20.242.171.218

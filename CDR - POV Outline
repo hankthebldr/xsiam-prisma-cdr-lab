@@ -1,0 +1,121 @@
+Cortex XDR Agent for Cloud and Cloud Detection & Response (CDR) POV use cases - internal scratchpad
+
+
+This is an internal document to outline specific CDR use cases for customers to use during a CDR POV. Since customers may be reluctant to introduce cloud threats in their own cloud environments, we wish to create a PAN managed cloud instance, preconfigured with cloud threats, that customers can connect their POV tenants to and install their XDR cloud agents into.
+
+
+
+
+
+
+No.
+Use Case (Cloud Threats)
+Description (CDR actions to detect and respond)
+Requirement for Passing
+1
+Reverse Shell attacks
+Blocks malicious activity where an attacker redirects standard input and output streams to network sockets.
+
+Use Behavioral Analysis to detect and identify suspicious patterns associated with reverse shells, such as:
+Unusual process behavior
+Suspicious command sequences
+Abnormal network connections
+Response actions:
+Isolate the host
+Terminate anomalous processes
+Conduct forensics
+DVWA 
+Ability to block the malicious processes, isolate/quarantine the host
+
+Ability to view the causality timeline of malicious activities
+
+
+
+2
+Container escapes
+On the first detection of suspicious rootkit behavior, the behavioral threat protection (BTP) module generates a Cortex XDR Agent alert. Cortex XDR stitches logs about the process that loaded the kernel module with other logs relating to the kernel module to aid in the alert investigation. When the Cortex XDR agent detects subsequent rootkit behavior, it blocks the activity.
+
+Kubernetes Goat
+Ability to detect the following in k8s pods:
+Adding privileges
+Suspicious activity execution
+Malicious code execution
+
+Ability to block the suspicious rootkit activity
+3
+Web Application attacks
+
+
+
+
+4
+Crypto-mining
+Cortex XDR prevents cryptomining by monitoring for processes which attempt to locate or steal cryptocurrencies.
+Cortex XDR uses advanced machine learning algorithms to detect anomalies and suspicious activities associated with crypto mining.
+It monitors for unusual process behavior, suspicious command sequences, and abnormal network connections that are typical of crypto mining operations.
+
+
+When crypto mining is detected, CDR can automatically respond to contain the threat.
+This may include terminating the malicious process, isolating affected systems, or revoking compromised credentials.
+CDR can restrict access to cloud resources being used for mining.
+Block IP addresses or domains associated with the crypto mining operation.
+For cloud-based mining, CDR can terminate, shut down, or power off instances being used for mining
+5
+Ransomware
+
+Cortex XDR uses several techniques to prevent known and unknown ransomware:
+WildFire Threat Intelligence: Queries a global threat database to identify known malicious files
+Local Analysis via Machine Learning: Examines thousands of file characteristics in real-time to determine if a file is likely malicious, without relying on signatures
+Behavioral Analysis: Monitors for suspicious patterns associated with ransomware, such as unusual file access patterns and mass file encryption activities
+
+
+When ransomware is detected, Cortex XDR can:
+Automatically terminate the malicious process
+Optionally quarantine the file
+Isolate affected systems to prevent spread
+
+
+6
+Malware
+
+
+
+
+7
+Live off the Land (LOL) attacks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HR Notes
+Link: xsiam-lab-hr
+Cloud Environment Considerations
+Cortex Protection Profile Considerations / Prerequisites
+Azure enviorment via Bastion — an agent with registration code changed to customer estate. 
+
+Scope 
+Kubernentes cluster 
+Deployments = provide particular use ases 
+
+Deliverable
+Repository with code examples 
+Kubernetes environment within Azure/EKS configured 

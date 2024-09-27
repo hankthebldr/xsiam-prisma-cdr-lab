@@ -1,0 +1,27 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: reed-lab-eks
+  region: us-east-1
+  version: '1.28'
+
+iam:
+  withOIDC: true
+
+nodeGroups:
+  - name: ng-bottlerocket
+    instanceType: m5.large
+    desiredCapacity: 3
+    amiFamily: Bottlerocket
+    ami: auto-ssm
+    iam:
+       attachPolicyARNs:
+          - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+          - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+          - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+          - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    ssh:
+        allow: true
+        publicKeyName: my-ec2-keypair-name
