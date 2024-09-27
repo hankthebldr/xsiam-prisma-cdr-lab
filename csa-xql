@@ -1,0 +1,11 @@
+dataset = xdr_data
+// filter the dataset by container based workloads
+|fields actor_container_info as container_info
+|filter container_info != null
+//  Isolate conatiner information 
+|alter pod_namespace = json_extract_scalar(container_info, "$.pod_namespace")
+|alter pod_name = json_extract_scalar(container_info, "$.pod_name")
+|alter image_name = json_extract_scalar(container_info, "$.image_name")
+|alter image_id = json_extract_scalar(container_info, "$.image_id")
+|alter container_id = json_extract_scalar(container_info, "$.id")
+|alter privileged = json_extract_scalar(container_info, "$.privileged")
