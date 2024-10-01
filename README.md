@@ -12,4 +12,7 @@ Dvwa - DVWA that is packaged into a kuberentes deployment, includes service obje
 - sql ingection 
 - reverse webshell 
 
+Kuberentes Goat - Easy CDR
+
+https://github.com/madhuakula/kubernetes-goat
 
