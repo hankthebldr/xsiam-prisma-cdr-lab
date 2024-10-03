@@ -5,13 +5,12 @@ This is an internal document to outline specific CDR use cases for customers to 
 
 
 
-
-
-
 No.
 Use Case (Cloud Threats)
 Description (CDR actions to detect and respond)
 Requirement for Passing
+
+
 1
 Reverse Shell attacks
 Blocks malicious activity where an attacker redirects standard input and output streams to network sockets.
