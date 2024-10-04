@@ -1,21 +1,28 @@
 todo.md
 # Active working To Do
 
-1. Miner - replicatset, something that would require local analysis. 
-2. https://github.com/jimmy-ly00/Ransomware-PoC
-3. Kuberentes specific
+## Installer Configuration 
+
+## Miner Senario 
+- replicatset to show persistance 
+
+
+1. https://github.com/jimmy-ly00/Ransomware-PoC
+2. Kuberentes specific
   - Kuberentes Security posturme Management 
 
 # Guide Creation 
 - SockShop/JuiceShop/DVWA -- TLDR overview 
 
+- ensure that each deployment has a namespace for sorting, (K8 goats)
+
 # Prisma Cloud Internal Links 
-Attack Path   
-1. IMDS - component based, metadat serice citi bank attacks,  enables the root  
+Attack Path Senario 
+- IMDS - component based, metadat serice citi bank attacks,  enables the root  
+- How does the Alert based reponce reduce risk by eliminating conditions of the attackpath 
 
+# BIOC 
+- What BIOC to execute within the cluster to trigger alert - custom or kuberentes specific in detection 
 
-linux-malkware
-
-find more projects/samples 
-
-state based object playbooks/roollbocks 
+# ABIOC 
+- what are the analytics BIOCs that can be put into place 
