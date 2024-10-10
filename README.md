@@ -26,7 +26,7 @@ https://github.com/madhuakula/kubernetes-goat
 
 https://docs.paloaltonetworks.com/advanced-wildfire/administration/configure-advanced-wildfire-analysis/verify-wildfire-submissions/test-a-sample-malware-file
 
-## Lineenum and esecut 
+## Lineenum and execute
 
 https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
 
@@ -44,3 +44,6 @@ https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Conti/b
 ### BFPDoor
 https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/BPFDoor/07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d.elf.x86_64
 
+Install k8s goat 
+https://madhuakula.com/kubernetes-goat/docs/
+Fix system-monitor image for correct architecture madhuakula/k8s-goat-system-monitor
