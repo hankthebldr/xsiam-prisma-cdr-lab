@@ -10,11 +10,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Download scripts from GitHub
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh 
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/att%26k-ttp/container-ttp-netgen.sh
+RUN curl -o /malicous-container.sh https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh && \
+    curl -o /container-ttp-netgen.sh https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/attk-ttp/container-ttp-netgen.sh
 
 # Make the scripts executable
 RUN chmod +x /malicous-container.sh /container-ttp-netgen.sh
+
+# Execute as root
+USER root
 
 # Set the default command to execute all scripts in sequence
 CMD ["/bin/bash", "-c", "/malicous-container.sh && /container-ttp-netgen.sh"]
