@@ -56,6 +56,49 @@ fi
 echo "[+] Making the downloaded samples executable..."
 chmod +x /tmp/pe_sample /tmp/apk_sample /tmp/macosx_sample /tmp/elf_sample
 
+# Step 6: Execute the samples 
+echo "[+] Executing the downloaded samples..."
+
+#  Execute PE Sample
+if [ -f /tmp/pe_sample ]; then
+  echo "[+] Executing PE sample..."
+  /tmp/pe_sample
+else
+  echo "[-] PE sample not found. Skipping..."
+fi
+
+# Execute APK Sample (typically needs to be run in an Android environment or emulator)
+if [ -f /tmp/apk_sample ]; then
+  echo "[+] Executing APK sample..."
+  # Assuming you have an Android emulator or a tool like 'adb' set up to install and run the APK
+  # Uncomment the line below if applicable
+  # adb install /tmp/apk_sample
+  echo "[!] Note: APK sample needs an Android environment to run."
+else
+  echo "[-] APK sample not found. Skipping..."
+fi
+
+# Execute MacOSX Sample
+if [ -f /tmp/macosx_sample ]; then
+  echo "[+] Executing MacOSX sample..."
+  /tmp/macosx_sample
+else
+  echo "[-] MacOSX sample not found. Skipping..."
+fi
+
+# Execute ELF Sample
+if [ -f /tmp/elf_sample ]; then
+  echo "[+] Executing ELF sample..."
+  /tmp/elf_sample
+else
+  echo "[-] ELF sample not found. Skipping..."
+fi
+
+# Note: Executing these files may be dangerous. Ensure you are in a safe, isolated environment.
+# WARNING: Do NOT run these samples on a production machine.
+# Ideally, use a sandbox environment or a virtual machine that can be reverted to a clean state.
+
+
 # Additional Step: Attempt Container Escape (Educational Purposes)
 
 # Scenario 1: Check for Docker Socket Access

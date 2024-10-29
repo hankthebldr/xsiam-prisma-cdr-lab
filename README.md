@@ -6,6 +6,9 @@ This repository serves as a comprehensive lab environment for practicing Cloud D
 
 Key scenarios include detection of containerized cryptominers, identifying vulnerable deployments, analyzing behavioral anomalies using ABIOC (Analytics Behavior Indicator of Compromise) techniques, and integrating **WildFire** threat intelligence for enhanced detection capabilities. By utilizing these labs, practitioners will gain practical experience with critical cloud security components that are essential for a robust security posture.
 
+## Usage
+Each Directory is a Specific Detection 
+
 
 ## Lab Scenarios - 
 
@@ -14,23 +17,11 @@ Key scenarios include detection of containerized cryptominers, identifying vulne
 3. **Malicous Container** 
 4. **NFGW stichting Malware analysis**
    - URL/APP - ID 
+   - DGA/Trarrid 
 5. **Behavioral Anomaly Analysis**
    - Local Enumeration 
-- 
+6. **Kubegoat**
 
-## Usage
-
-- **Learning Objectives**:
-  - Gain in-depth knowledge of cloud-native threat detection methodologies within Kubernetes environments.
-  - Learn to configure and use Prisma Cloud effectively to achieve high visibility and control over cloud workloads.
-  - Understand how to leverage XSIAM to correlate telemetry data, automate responses, and derive meaningful security insights.
-  - Develop an understanding of integrating threat intelligence feeds for improved context in incident management.
-
-- **Target Audience**:
-  - **Cloud Security Engineers**: Individuals focused on maintaining a secure cloud infrastructure.
-  - **Security Operations Teams (SecOps)**: Teams interested in gaining hands-on experience with advanced detection and response workflows using Palo Alto Networks technologies.
-  - **DevOps and Cloud Practitioners**: Professionals aiming to integrate security into their CI/CD pipelines and improve their ability to detect and respond to threats in containerized environments.
-  - **SOC Analysts**: Analysts looking to enhance their incident detection and response capabilities with cloud-native tools and advanced threat analytics.
 
 ## Contributing
 
