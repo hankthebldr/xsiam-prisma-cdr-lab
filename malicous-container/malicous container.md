@@ -2,7 +2,8 @@
 
 [X] test malicous contaienr script 
 [X] Create dockerfile image 
-[ ] build container locally 
+[X] build container locally 
+[X] test image locally 
 
 
 
