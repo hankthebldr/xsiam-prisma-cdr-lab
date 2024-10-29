@@ -7,7 +7,7 @@ Repo orgnization
   - ran/image
   - replica set
   - known/unown to wildfire 
-'
+
 Dvwa - DVWA that is packaged into a kuberentes deployment, includes service objects and the ability to assign a pulci ip 
 - sql ingection 
 - reverse webshell 
@@ -25,6 +25,8 @@ https://github.com/madhuakula/kubernetes-goat
 ## WildFire Tests - Powered by Precison AI 
 
 https://docs.paloaltonetworks.com/advanced-wildfire/administration/configure-advanced-wildfire-analysis/verify-wildfire-submissions/test-a-sample-malware-file
+
+curl h
 
 ## Lineenum and execute
 
@@ -47,3 +49,48 @@ https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/BPFDoor
 Install k8s goat 
 https://madhuakula.com/kubernetes-goat/docs/
 Fix system-monitor image for correct architecture madhuakula/k8s-goat-system-monitor
+
+### Kuberentes ABIOC
+
+### GOAT  Install Stesps 
+1. Install MicroK8s
+2. 
+
+Create Kubeneretnes Nodes 
+- Cannot edit the different icons post initialization of the resources 
+
+
+### Initialize First Node 
+- commands > Setup 
+
+- RDP into first Nodes 
+  
+```sudo apt update && sudo apt upgrade```
+
+- Kuberentes Address
+10.3.0.42
+
+RDP 
+username: lab-user
+passwork: Paloalto1!
+
+### Ubuntu Configuration 
+Sudo apt upgrade 
+
+10.3.0.44
+
+###  Packages
+Microk8s -- classic 
+Git 
+docker - CRI 
+sudo snap install kubectl --classic 
+
+### Install and configurat 
+
+git cone REPO
+
+Sudo chmod +x Setuo/Access/Teardonw
+
+### Kubernetes UG 
+
+dataset = xdr_data| comp count() by _product

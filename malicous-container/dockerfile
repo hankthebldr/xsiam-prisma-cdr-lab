@@ -1,0 +1,13 @@
+FROM busybox
+
+# Set working directory
+WORKDIR /tmp
+
+# Download the script from GitHub
+RUN wget https://raw.githubusercontent.com/<your-github-username>/<your-repository>/main/busybox_sample_download_script.sh -O /tmp/busybox_sample_download_script.sh
+
+# Make the script executable
+RUN chmod +x /tmp/busybox_sample_download_script.sh
+
+# Run the script when container starts
+CMD ["/tmp/busybox_sample_download_script.sh"]

