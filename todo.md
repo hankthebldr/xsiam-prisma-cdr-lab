@@ -46,3 +46,11 @@ mick8s kubectl --add
 
 ### 
 Access 
+
+
+For stitching to happen you need:
+S.ip + s.port
+d.ip + d.port
+Protocol
+10 second timeframe
+Both the endpoint and fw should see the log than stitch!

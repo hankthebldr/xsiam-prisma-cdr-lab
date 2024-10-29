@@ -1,4 +1,9 @@
 # Cortex XDR Malicous Container
 
-[ ] test malicous contaienr script 
+[X] test malicous contaienr script 
+[X] Create dockerfile image 
+[ ] build container locally 
+
+
+
 

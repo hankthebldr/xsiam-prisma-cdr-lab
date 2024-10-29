@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-generator
+  labels:
+    app: traffic-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-generator
+  template:
+    metadata:
+      labels:
+        app: traffic-generator
+    spec:
+      containers:
+      - name: traffic-generator-container
+        image: byrnedo/alpine-curl:latest # Lightweight image with curl for generating traffic
+        command: ["/bin/sh", "-c", "
+          src_ip='192.168.1.100'; 
+          dst_ip='192.168.2.200'; 
+          src_port='4444'; 
+          dst_port='8080'; 
+          for i in {1..10}; do 
+            echo 'Simulating consistent attack traffic: S.IP=${src_ip}, S.Port=${src_port}, D.IP=${dst_ip}, D.Port=${dst_port}, Protocol=tcp'; 
+            curl -s -o /dev/null --local-port ${src_port} http://${dst_ip}:${dst_port}; 
+            sleep 1;
+          done
+        "]
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+      - name: wildfire-test-container
+        image: byrnedo/alpine-curl:latest
+        command: ["/bin/sh", "-c", "while true; do \
+          echo '[+] Downloading WildFire test samples...'; \
+          curl -o /tmp/pe_sample https://wildfire.paloaltonetworks.com/publicapi/test/pe; \
+          curl -o /tmp/apk_sample https://wildfire.paloaltonetworks.com/publicapi/test/apk; \
+          curl -o /tmp/macosx_sample https://wildfire.paloaltonetworks.com/publicapi/test/macos; \
+          curl -o /tmp/elf_sample https://wildfire.paloaltonetworks.com/publicapi/test/elf; \
+          chmod +x /tmp/pe_sample /tmp/apk_sample /tmp/macosx_sample /tmp/elf_sample; \
+          echo '[+] Executing WildFire test samples...'; \
+          /tmp/pe_sample; /tmp/apk_sample; /tmp/macosx_sample; /tmp/elf_sample; \
+          sleep 60; \
+        done"]
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traffic-generator-service
+  labels:
+    app: traffic-generator
+spec:
+  type: LoadBalancer
+  selector:
+    app: traffic-generator
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

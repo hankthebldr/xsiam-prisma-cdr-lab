@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptominer-deployment
+  labels:
+    app: cryptominer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cryptominer
+  template:
+    metadata:
+      labels:
+        app: cryptominer
+    spec:
+      containers:
+      - name: cryptominer-container
+        image: rkjnsn/coinhive-miner:latest # Example cryptominer image for educational purposes
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsNonRoot: false
+          capabilities:
+            add:
+              - SYS_ADMIN
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: true
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        effect: "NoSchedule"
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - cryptominer
+              topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cryptominer-service
+  labels:
+    app: cryptominer
+spec:
+  type: LoadBalancer
+  selector:
+    app: cryptominer
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cryptominer-deny-egress
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cryptominer
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 8080

