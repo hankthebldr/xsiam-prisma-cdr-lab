@@ -6,51 +6,36 @@ todo.md
 ## Miner Senario 
 - replicatset to show persistance 
 
+### Juice-shop 
 
-1. https://github.com/jimmy-ly00/Ransomware-PoC
-2. Kuberentes specific
-  - Kuberentes Security posturme Management 
+
+### Malicous Container 
+
+### Ransomware POV 
+
+### NGFW - Analytics Stitching 
 
 # Guide Creation 
-- SockShop/JuiceShop/DVWA -- TLDR overview 
-
 - ensure that each deployment has a namespace for sorting, (K8 goats)
-
-# Prisma Cloud Internal Links 
-Attack Path Senario 
-- IMDS - component based, metadat serice citi bank attacks,  enables the root  
-- How does the Alert based reponce reduce risk by eliminating conditions of the attackpath 
+ 
 
 # BIOC 
 - What BIOC to execute within the cluster to trigger alert - custom or kuberentes specific in detection 
+- 
 
 # ABIOC 
-- what are the analytics BIOCs that can be put into place 
+- container escape to host and then local enumeration 
 
-# Senario Creation 
-- Create container escadpe 
-- Create replicating miners enario 
-- Download and preinstall/configure the 
-
-DVWA 
-- https://github.com/digininja/DVWA/pkgs/container/dvwa
-- create docker image/kubernetes manifest to mirror 
-
-f2 -- ctl D to find/iterate 
-
-setup/access
-
-### Clustering
 mick8s kubectl --add 
 
 
 ### 
-Access 
-
-
+[ ] Create a container that calls the same network executable in a loop and incorperate it into the deamonset 
 For stitching to happen you need:
 S.ip + s.port
 d.ip + d.port
 Protocol
 10 second timeframe
 Both the endpoint and fw should see the log than stitch!
+
+

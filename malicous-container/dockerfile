@@ -19,3 +19,4 @@ RUN chmod +x /opt/malicous-container.sh
 
 # Run the script
 CMD ["/bin/bash", "/opt/malicous-container.sh"
+
