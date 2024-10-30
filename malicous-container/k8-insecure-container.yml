@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-detection-container
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poc-detection
+  template:
+    metadata:
+      labels:
+        app: poc-detection
+    spec:
+      containers:
+      - name: detection-container
+        image: your-dockerhub-username/your-image-name:latest
+        securityContext:
+          runAsUser: 0
+          privileged: true
+          capabilities:
+            add: ["ALL"]
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+        - name: host-root
+          mountPath: /host
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: host-root
+        hostPath:
+          path: /
