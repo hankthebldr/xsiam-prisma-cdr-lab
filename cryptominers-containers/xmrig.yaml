@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     run: miner-threat
-  name: miner-threat-example
+  name: xmrig-miner-container
 spec:
   containers:
   - image: zsco/xmrig-docker:latest
