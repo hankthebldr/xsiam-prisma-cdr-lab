@@ -8,19 +8,29 @@ Key scenarios include detection of containerized cryptominers, identifying vulne
 
 ## Usage
 Each Directory is a Specific Detection 
+- Directories contain both the kubernetes deployment yaml, these can be added to any cluster
+- Diredtories container the scripts, and specific dockerfile specs to build the required images locally should you not want to pull from images refrenced on dockerhub 
+- Directores have a Readme file that walks through the step by step process for deploying 
 
 
 ## Lab Scenarios - 
 
-1. **Cryptominer Detection**
-2. **Vulnerable Application Deployment**.
-3. **Malicous Container** 
-4. **NFGW stichting Malware analysis**
+1. **ATTK-TTP**
+   - Malicous Kuberentes deployment executing TTP based processes 
+2. **Cryptominer Detection**
+   - Cryto-miners embeded within deployment senario
+   - xmrig container miner (NGFW)
+3. **Vulnerable Application Deployment (AVA) **.
+   1. Damn Vulnerable Web Application 
+4. **Malicous Container** 
+   - BIOC/ABICO Detections from a detection container
+   - Container > Wildfire Analysis
+5. **NFGW stichting Malware analysis*
    - URL/APP - ID 
    - DGA/Trarrid 
-5. **Behavioral Anomaly Analysis**
+6. **Behavioral Anomaly Analysis**
    - Local Enumeration 
-6. **Kubegoat**
+7. **Kubegoat**
 
 
 ## Contributing

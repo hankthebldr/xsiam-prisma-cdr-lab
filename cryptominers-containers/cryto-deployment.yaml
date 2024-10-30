@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cryptominer-container
-        image: rkjnsn/coinhive-miner:latest # Cryptominer image for educational purposes
+        image: carlitoplatanito/coinhive # Cryptominer image for educational purposes
         ports:
         - containerPort: 8080
         securityContext:
