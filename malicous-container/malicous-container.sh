@@ -59,6 +59,7 @@ chmod +x /tmp/pe_sample /tmp/apk_sample /tmp/macosx_sample /tmp/elf_sample
 # Step 6: Execute the samples 
 echo "[+] Executing the downloaded samples..."
 
+
 #  Execute PE Sample
 if [ -f /tmp/pe_sample ]; then
   echo "[+] Executing PE sample..."

@@ -1,0 +1,981 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2024-04-15T13:38:03Z"
+    labels:
+      run: dvwa-hr-test
+    name: dvwa-hr-test
+    namespace: default
+    resourceVersion: "28341333"
+    uid: f0d42829-cc97-4eff-a124-2ed1dbd4323d
+  spec:
+    containers:
+    - image: ghrc.io/diginija/dvwa:1232568
+      imagePullPolicy: IfNotPresent
+      name: dvwa-hr-test
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-799nk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-0-14-210.ec2.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-799nk
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:38:03Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:38:03Z"
+      message: 'containers with unready status: [dvwa-hr-test]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:38:03Z"
+      message: 'containers with unready status: [dvwa-hr-test]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:38:03Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - image: ghrc.io/diginija/dvwa:1232568
+      imageID: ""
+      lastState: {}
+      name: dvwa-hr-test
+      ready: false
+      restartCount: 0
+      started: false
+      state:
+        waiting:
+          message: Back-off pulling image "ghrc.io/diginija/dvwa:1232568"
+          reason: ImagePullBackOff
+    hostIP: 10.0.14.210
+    phase: Pending
+    podIP: 10.0.0.107
+    podIPs:
+    - ip: 10.0.0.107
+    qosClass: BestEffort
+    startTime: "2024-04-15T13:38:03Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2024-04-15T13:40:45Z"
+    generateName: dvwa-web-5c9fdc4d9d-
+    labels:
+      app: dvwa-web
+      pod-template-hash: 5c9fdc4d9d
+      tier: frontend
+    name: dvwa-web-5c9fdc4d9d-f4hk2
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: dvwa-web-5c9fdc4d9d
+      uid: 61c25b14-079a-43fa-a738-4b76fc657f91
+    resourceVersion: "28341220"
+    uid: ca728c92-949a-420a-a9e8-c88debf5c0cf
+  spec:
+    containers:
+    - env:
+      - name: RECAPTCHA_PRIV_KEY
+        valueFrom:
+          configMapKeyRef:
+            key: RECAPTCHA_PRIV_KEY
+            name: dvwa-config
+      - name: RECAPTCHA_PUB_KEY
+        valueFrom:
+          configMapKeyRef:
+            key: RECAPTCHA_PUB_KEY
+            name: dvwa-config
+      - name: SECURITY_LEVEL
+        valueFrom:
+          configMapKeyRef:
+            key: SECURITY_LEVEL
+            name: dvwa-config
+      - name: PHPIDS_ENABLED
+        valueFrom:
+          configMapKeyRef:
+            key: PHPIDS_ENABLED
+            name: dvwa-config
+      - name: PHPIDS_VERBOSE
+        valueFrom:
+          configMapKeyRef:
+            key: PHPIDS_VERBOSE
+            name: dvwa-config
+      - name: PHP_DISPLAY_ERRORS
+        valueFrom:
+          configMapKeyRef:
+            key: PHP_DISPLAY_ERRORS
+            name: dvwa-config
+      - name: MYSQL_HOSTNAME
+        value: dvwa-mysql-service
+      - name: MYSQL_DATABASE
+        valueFrom:
+          secretKeyRef:
+            key: DVWA_DATABASE
+            name: dvwa-secrets
+      - name: MYSQL_USERNAME
+        valueFrom:
+          secretKeyRef:
+            key: DVWA_USERNAME
+            name: dvwa-secrets
+      - name: MYSQL_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: DVWA_PASSWORD
+            name: dvwa-secrets
+      image: cytopia/dvwa:php-8.1
+      imagePullPolicy: IfNotPresent
+      name: dvwa
+      ports:
+      - containerPort: 80
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-mf7cl
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-0-14-210.ec2.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-mf7cl
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:45Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:45Z"
+      message: 'containers with unready status: [dvwa]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:45Z"
+      message: 'containers with unready status: [dvwa]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:45Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - image: cytopia/dvwa:php-8.1
+      imageID: ""
+      lastState: {}
+      name: dvwa
+      ready: false
+      restartCount: 0
+      started: false
+      state:
+        waiting:
+          message: configmap "dvwa-config" not found
+          reason: CreateContainerConfigError
+    hostIP: 10.0.14.210
+    phase: Pending
+    podIP: 10.0.13.238
+    podIPs:
+    - ip: 10.0.13.238
+    qosClass: BestEffort
+    startTime: "2024-04-15T13:40:45Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2024-02-28T20:11:40Z"
+    generateName: juice-shop-56577d6686-
+    labels:
+      app: juice-shop
+      pod-template-hash: 56577d6686
+    name: juice-shop-56577d6686-hkbvz
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: juice-shop-56577d6686
+      uid: 1d9dca82-003a-4a7f-b8f5-579eab800c38
+    resourceVersion: "18245022"
+    uid: 45fd7e45-c094-4da4-b1f0-8a9126544843
+  spec:
+    containers:
+    - image: bkimminich/juice-shop
+      imagePullPolicy: Always
+      name: juice-shop
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-fh56z
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-0-20-98.ec2.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-fh56z
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-28T20:11:40Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-28T20:11:42Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-28T20:11:42Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-28T20:11:40Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://45428d6895665633cde7010a249af47270ccc2068a5bb8ff5ac33202253a95f7
+      image: docker.io/bkimminich/juice-shop:latest
+      imageID: docker.io/bkimminich/juice-shop@sha256:4a80df64f0430b73955b97a653d31adb1f7782417b900c930805c7084b5dfe41
+      lastState: {}
+      name: juice-shop
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2024-02-28T20:11:42Z"
+    hostIP: 10.0.20.98
+    phase: Running
+    podIP: 10.0.26.30
+    podIPs:
+    - ip: 10.0.26.30
+    qosClass: BestEffort
+    startTime: "2024-02-28T20:11:40Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2024-02-29T15:11:49Z"
+    labels:
+      run: miner-threat
+    name: miner-threat
+    namespace: default
+    resourceVersion: "28341130"
+    uid: ffcc449b-9e69-4e01-b511-0f2661e17e8f
+  spec:
+    containers:
+    - image: xmrig/xmrig
+      imagePullPolicy: Always
+      name: miner-threat
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-khjx6
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-0-20-98.ec2.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-khjx6
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-29T15:11:49Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:18Z"
+      message: 'containers with unready status: [miner-threat]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:18Z"
+      message: 'containers with unready status: [miner-threat]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-02-29T15:11:49Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://693b2091bb26174109638cb7c93db527ef44fe99477c9dbabd1d5c0493d73452
+      image: docker.io/xmrig/xmrig:latest
+      imageID: docker.io/xmrig/xmrig@sha256:cac2042ca92370232ead86c0d1f97d6ebe069b27b549b363a17d0921006848ae
+      lastState:
+        terminated:
+          containerID: containerd://693b2091bb26174109638cb7c93db527ef44fe99477c9dbabd1d5c0493d73452
+          exitCode: 137
+          finishedAt: "2024-04-15T13:40:17Z"
+          reason: Error
+          startedAt: "2024-04-15T13:40:17Z"
+      name: miner-threat
+      ready: false
+      restartCount: 12932
+      started: false
+      state:
+        waiting:
+          message: back-off 5m0s restarting failed container=miner-threat pod=miner-threat_default(ffcc449b-9e69-4e01-b511-0f2661e17e8f)
+          reason: CrashLoopBackOff
+    hostIP: 10.0.20.98
+    phase: Running
+    podIP: 10.0.20.11
+    podIPs:
+    - ip: 10.0.20.11
+    qosClass: BestEffort
+    startTime: "2024-02-29T15:11:49Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"creationTimestamp":null,"labels":{"run":"miner-threat"},"name":"miner-threat-example","namespace":"default"},"spec":{"containers":[{"image":"zsco/xmrig-docker:latest","name":"miner-threat","resources":{}}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always"},"status":{}}
+    creationTimestamp: "2024-04-15T13:40:37Z"
+    labels:
+      run: miner-threat
+    name: miner-threat-example
+    namespace: default
+    resourceVersion: "28341173"
+    uid: 09f8c172-c35d-47d2-8ed3-f37efbff2adc
+  spec:
+    containers:
+    - image: zsco/xmrig-docker:latest
+      imagePullPolicy: Always
+      name: miner-threat
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-lvfzc
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-0-20-98.ec2.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-lvfzc
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:37Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:43Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:43Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-04-15T13:40:37Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://0200b85a9aea2401c80508190732a1d77d0b0695084fb1994d1f3adef9c313e2
+      image: docker.io/zsco/xmrig-docker:latest
+      imageID: docker.io/zsco/xmrig-docker@sha256:a7f2b8a747f5c53305d60d177eaebb07f5fd36c2ac657206b7de3ad0d60acc44
+      lastState: {}
+      name: miner-threat
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2024-04-15T13:40:42Z"
+    hostIP: 10.0.20.98
+    phase: Running
+    podIP: 10.0.24.69
+    podIPs:
+    - ip: 10.0.24.69
+    qosClass: BestEffort
+    startTime: "2024-04-15T13:40:37Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"juice-shop","namespace":"default"},"spec":{"ports":[{"name":"http","port":8000,"targetPort":3000}],"selector":{"app":"juice-shop"},"type":"NodePort"}}
+    creationTimestamp: "2024-02-28T20:13:50Z"
+    name: juice-shop
+    namespace: default
+    resourceVersion: "18245353"
+    uid: ab81552b-898e-4266-bff7-9f03983638a5
+  spec:
+    clusterIP: 172.20.245.158
+    clusterIPs:
+    - 172.20.245.158
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30734
+      port: 8000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: juice-shop
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2023-12-05T23:35:22Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "189"
+    uid: a43e64cb-4781-4dae-8305-573b57436122
+  spec:
+    clusterIP: 172.20.0.1
+    clusterIPs:
+    - 172.20.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"dvwa-web","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"dvwa-web","tier":"frontend"}},"template":{"metadata":{"labels":{"app":"dvwa-web","tier":"frontend"}},"spec":{"containers":[{"env":[{"name":"RECAPTCHA_PRIV_KEY","valueFrom":{"configMapKeyRef":{"key":"RECAPTCHA_PRIV_KEY","name":"dvwa-config"}}},{"name":"RECAPTCHA_PUB_KEY","valueFrom":{"configMapKeyRef":{"key":"RECAPTCHA_PUB_KEY","name":"dvwa-config"}}},{"name":"SECURITY_LEVEL","valueFrom":{"configMapKeyRef":{"key":"SECURITY_LEVEL","name":"dvwa-config"}}},{"name":"PHPIDS_ENABLED","valueFrom":{"configMapKeyRef":{"key":"PHPIDS_ENABLED","name":"dvwa-config"}}},{"name":"PHPIDS_VERBOSE","valueFrom":{"configMapKeyRef":{"key":"PHPIDS_VERBOSE","name":"dvwa-config"}}},{"name":"PHP_DISPLAY_ERRORS","valueFrom":{"configMapKeyRef":{"key":"PHP_DISPLAY_ERRORS","name":"dvwa-config"}}},{"name":"MYSQL_HOSTNAME","value":"dvwa-mysql-service"},{"name":"MYSQL_DATABASE","valueFrom":{"secretKeyRef":{"key":"DVWA_DATABASE","name":"dvwa-secrets"}}},{"name":"MYSQL_USERNAME","valueFrom":{"secretKeyRef":{"key":"DVWA_USERNAME","name":"dvwa-secrets"}}},{"name":"MYSQL_PASSWORD","valueFrom":{"secretKeyRef":{"key":"DVWA_PASSWORD","name":"dvwa-secrets"}}}],"image":"cytopia/dvwa:php-8.1","name":"dvwa","ports":[{"containerPort":80}]}]}}}}
+    creationTimestamp: "2024-04-15T13:40:45Z"
+    generation: 1
+    name: dvwa-web
+    namespace: default
+    resourceVersion: "28341192"
+    uid: e9ccec50-ef18-4df0-b848-eabce86d5b4e
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: dvwa-web
+        tier: frontend
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: dvwa-web
+          tier: frontend
+      spec:
+        containers:
+        - env:
+          - name: RECAPTCHA_PRIV_KEY
+            valueFrom:
+              configMapKeyRef:
+                key: RECAPTCHA_PRIV_KEY
+                name: dvwa-config
+          - name: RECAPTCHA_PUB_KEY
+            valueFrom:
+              configMapKeyRef:
+                key: RECAPTCHA_PUB_KEY
+                name: dvwa-config
+          - name: SECURITY_LEVEL
+            valueFrom:
+              configMapKeyRef:
+                key: SECURITY_LEVEL
+                name: dvwa-config
+          - name: PHPIDS_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                key: PHPIDS_ENABLED
+                name: dvwa-config
+          - name: PHPIDS_VERBOSE
+            valueFrom:
+              configMapKeyRef:
+                key: PHPIDS_VERBOSE
+                name: dvwa-config
+          - name: PHP_DISPLAY_ERRORS
+            valueFrom:
+              configMapKeyRef:
+                key: PHP_DISPLAY_ERRORS
+                name: dvwa-config
+          - name: MYSQL_HOSTNAME
+            value: dvwa-mysql-service
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_DATABASE
+                name: dvwa-secrets
+          - name: MYSQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_USERNAME
+                name: dvwa-secrets
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_PASSWORD
+                name: dvwa-secrets
+          image: cytopia/dvwa:php-8.1
+          imagePullPolicy: IfNotPresent
+          name: dvwa
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2024-04-15T13:40:45Z"
+      lastUpdateTime: "2024-04-15T13:40:45Z"
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: "False"
+      type: Available
+    - lastTransitionTime: "2024-04-15T13:40:45Z"
+      lastUpdateTime: "2024-04-15T13:40:45Z"
+      message: ReplicaSet "dvwa-web-5c9fdc4d9d" is progressing.
+      reason: ReplicaSetUpdated
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    replicas: 1
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2024-02-28T20:11:40Z"
+    generation: 1
+    name: juice-shop
+    namespace: default
+    resourceVersion: "18245026"
+    uid: d47a61ba-59ab-434a-9f2d-853be856d41d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: juice-shop
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: juice-shop
+      spec:
+        containers:
+        - image: bkimminich/juice-shop
+          imagePullPolicy: Always
+          name: juice-shop
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2024-02-28T20:11:42Z"
+      lastUpdateTime: "2024-02-28T20:11:42Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2024-02-28T20:11:40Z"
+      lastUpdateTime: "2024-02-28T20:11:42Z"
+      message: ReplicaSet "juice-shop-56577d6686" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2024-04-15T13:40:45Z"
+    generation: 1
+    labels:
+      app: dvwa-web
+      pod-template-hash: 5c9fdc4d9d
+      tier: frontend
+    name: dvwa-web-5c9fdc4d9d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: dvwa-web
+      uid: e9ccec50-ef18-4df0-b848-eabce86d5b4e
+    resourceVersion: "28341190"
+    uid: 61c25b14-079a-43fa-a738-4b76fc657f91
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: dvwa-web
+        pod-template-hash: 5c9fdc4d9d
+        tier: frontend
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: dvwa-web
+          pod-template-hash: 5c9fdc4d9d
+          tier: frontend
+      spec:
+        containers:
+        - env:
+          - name: RECAPTCHA_PRIV_KEY
+            valueFrom:
+              configMapKeyRef:
+                key: RECAPTCHA_PRIV_KEY
+                name: dvwa-config
+          - name: RECAPTCHA_PUB_KEY
+            valueFrom:
+              configMapKeyRef:
+                key: RECAPTCHA_PUB_KEY
+                name: dvwa-config
+          - name: SECURITY_LEVEL
+            valueFrom:
+              configMapKeyRef:
+                key: SECURITY_LEVEL
+                name: dvwa-config
+          - name: PHPIDS_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                key: PHPIDS_ENABLED
+                name: dvwa-config
+          - name: PHPIDS_VERBOSE
+            valueFrom:
+              configMapKeyRef:
+                key: PHPIDS_VERBOSE
+                name: dvwa-config
+          - name: PHP_DISPLAY_ERRORS
+            valueFrom:
+              configMapKeyRef:
+                key: PHP_DISPLAY_ERRORS
+                name: dvwa-config
+          - name: MYSQL_HOSTNAME
+            value: dvwa-mysql-service
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_DATABASE
+                name: dvwa-secrets
+          - name: MYSQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_USERNAME
+                name: dvwa-secrets
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: DVWA_PASSWORD
+                name: dvwa-secrets
+          image: cytopia/dvwa:php-8.1
+          imagePullPolicy: IfNotPresent
+          name: dvwa
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2024-02-28T20:11:40Z"
+    generation: 1
+    labels:
+      app: juice-shop
+      pod-template-hash: 56577d6686
+    name: juice-shop-56577d6686
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: juice-shop
+      uid: d47a61ba-59ab-434a-9f2d-853be856d41d
+    resourceVersion: "18245023"
+    uid: 1d9dca82-003a-4a7f-b8f5-579eab800c38
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: juice-shop
+        pod-template-hash: 56577d6686
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: juice-shop
+          pod-template-hash: 56577d6686
+      spec:
+        containers:
+        - image: bkimminich/juice-shop
+          imagePullPolicy: Always
+          name: juice-shop
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
