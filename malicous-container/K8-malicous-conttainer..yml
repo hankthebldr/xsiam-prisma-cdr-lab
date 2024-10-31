@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: detection-container
-        image: your-dockerhub-username/your-image-name:latest
+        image: hreed014/cdr-xsiam-pc
         securityContext:
           runAsUser: 0
           privileged: true

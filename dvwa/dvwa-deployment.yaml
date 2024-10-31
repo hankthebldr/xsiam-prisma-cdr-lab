@@ -1,22 +1,147 @@
+# This YAML demonstrates several insecure container scenarios commonly seen in the industry.
+# It is intended for educational purposes only and should only be run in a secure, isolated environment.
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insecure-container-scenarios
+---
+# Scenario 1: Running a container with root privileges
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dvwa-deployment
-  labels:
-    app: dvwa
+  name: insecure-root-container
+  namespace: insecure-container-scenarios
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dvwa
+      app: insecure-root
   template:
     metadata:
       labels:
-        app: dvwa
+        app: insecure-root
     spec:
       containers:
-      - name: dvwa-container
-        image: vulnerables/web-dvwa:latest
+      - name: nginx
+        image: nginx:alpine
+        securityContext:
+          runAsUser: 0  # Running as root user, which is insecure
+---
+# Scenario 2: Running a container without resource limits (CPU, memory)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-resource-limits
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-resource-limits
+  template:
+    metadata:
+      labels:
+        app: no-resource-limits
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        # No resource limits are defined here, which is insecure
+---
+# Scenario 3: Running a container with privilege escalation allowed
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: privileged-container
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: privileged
+  template:
+    metadata:
+      labels:
+        app: privileged
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        securityContext:
+          privileged: true  # Allowing privilege escalation
+---
+# Scenario 4: Running a container without dropping capabilities
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: full-capabilities-container
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: full-capabilities
+  template:
+    metadata:
+      labels:
+        app: full-capabilities
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        securityContext:
+          capabilities:
+            add: ["ALL"]  # Adding all capabilities
+---
+# Scenario 5: Mounting sensitive host directories into the container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensitive-mount
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sensitive-mount
+  template:
+    metadata:
+      labels:
+        app: sensitive-mount
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        volumeMounts:
+        - name: etc-mount
+          mountPath: /mnt/etc
+          readOnly: true
+      volumes:
+      - name: etc-mount
+        hostPath:
+          path: /etc  # Mounting sensitive host directory
+          type: Directory
+---
+# Scenario 6: Running a container with an outdated and vulnerable image
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outdated-container
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outdated
+  template:
+    metadata:
+      labels:
+        app: outdated
+    spec:
+      containers:
+      - name: dvwa
+        image: vulnerables/web-dvwa:latest  # Using outdated, vulnerable image
         ports:
         - containerPort: 80
         securityContext:
@@ -54,10 +179,150 @@ spec:
                   - dvwa
               topologyKey: "kubernetes.io/hostname"
 ---
+# Scenario 7: Storing credentials in environment variables
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-credentials
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: env-credentials
+  template:
+    metadata:
+      labels:
+        app: env-credentials
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_USER
+          value: "root"
+        - name: MYSQL_PASSWORD
+          value: "password123"  # Storing credentials in environment variables
+---
+# Scenario 8: Running a container with an insecure network setting (host network mode)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: host-network-container
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: host-network
+  template:
+    metadata:
+      labels:
+        app: host-network
+    spec:
+      hostNetwork: true  # Using host network mode
+      containers:
+      - name: nginx
+        image: nginx:alpine
+---
+# Scenario 9: Running a container with read-write access to root filesystem
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rw-rootfs
+  namespace: insecure-container-scenarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rw-rootfs
+  template:
+    metadata:
+      labels:
+        app: rw-rootfs
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        volumeMounts:
+        - name: rootfs
+          mountPath: /mnt/rw-root
+      volumes:
+      - name: rootfs
+        hostPath:
+          path: /
+          type: Directory
+---
+# DVWA Deployment with Port Forwarding for PoC
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dvwa-deployment
+  namespace: insecure-container-scenarios
+  labels:
+    app: dvwa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dvwa
+  template:
+    metadata:
+      labels:
+        app: dvwa
+    spec:
+      containers:
+      - name: dvwa-container
+        image: vulnerables/web-dvwa:latest
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        volumeMounts:
+        - name: kali-portforward
+          mountPath: /tmp/kali
+      volumes:
+      - name: kali-portforward
+        hostPath:
+          path: /tmp/kali  # Assuming a kali linux machine for testing purposes
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        effect: "NoSchedule"
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - dvwa
+              topologyKey: "kubernetes.io/hostname"
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: dvwa-service
+  namespace: insecure-container-scenarios
   labels:
     app: dvwa
 spec:
@@ -68,3 +333,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
+    nodePort: 30080 # Adding nodePort to facilitate port forwarding for PoC purposes
