@@ -20,18 +20,18 @@ Each Directory is a Specific Detection
 2. **Cryptominer Detection**
    - Cryto-miners embeded within deployment senario
    - xmrig container miner (NGFW)
-3. **Vulnerable Application Deployment (AVA) **.
+3. **Vulnerable Application Deployment(AVA)**
    1. Damn Vulnerable Web Application 
 4. **Malicous Container** 
    - BIOC/ABICO Detections from a detection container
    - Container > Wildfire Analysis
-5. **NFGW stichting Malware analysis*
+5. **NFGW stichting Malware analysis**
    - URL/APP - ID 
-   - DGA/Trarrid 
+   - DGA
 6. **Behavioral Anomaly Analysis**
-   - Local Enumeration 
+   - Local Enumeration on Linux Host 
 7. **Kubegoat**
-
+   - Container Escape > Host OS 
 
 ## Contributing
 
