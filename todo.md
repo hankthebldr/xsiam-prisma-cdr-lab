@@ -4,15 +4,17 @@ todo.md
 ## Installer Configuration 
 
 ## Miner Senario 
-- replicatset to show persistance 
+[ ] Deploy multi-miner replicaSet for persistances 
+[ ] Determine if BTP/NGFW and alert sources from Crpto Miner
 
 ### Juice-shop 
-
+[ ] Review the vulernable code to determine if its a candidate for shift left consideration (Cloud to Code to run)
 
 
 
 ### Malicous Container 
-
+[ ] Is there a way to identify a service account within the container that coudl be executing the commaneds
+[ ] Replicate the Stiching found in the AKS 
 
 
 
