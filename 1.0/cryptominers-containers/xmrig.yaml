@@ -6,7 +6,6 @@ metadata:
   labels:
     run: miner-threat
     app: xmrig-miner
-    version: 1
   name: xmrig-miner-container
 spec: # the spec section defines what container will be called in the kuberentes deployment 
   containers:

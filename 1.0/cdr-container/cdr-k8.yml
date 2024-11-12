@@ -2,9 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: panw-cdr-k8
-  namespace: insecure-container-scenarios
+  namespace: default
+  labels:
+    app: poc-detection
 spec:
-  replicas: 2
+  replicas: 2  # Increased replicas for redundancy
   selector:
     matchLabels:
       app: poc-detection
@@ -17,19 +19,31 @@ spec:
       - name: panw-cdr-container
         image: hreed014/cdr-xsiam-pc
         securityContext:
-          runAsUser: 0
-          privileged: true
+          runAsUser: 1000  # Avoid running as root unless absolutely necessary
+          runAsNonRoot: true  # Ensure the container does not run as root
+          allowPrivilegeEscalation: false  # Prevent privilege escalation
           capabilities:
-            add: ["ALL"]
+            drop: ["ALL"]  # Minimize capabilities
+        resources:  # Add resource requests and limits for stability
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
         volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock
+          readOnly: true  # Ensure that mounts that don't require write permissions are read-only
         - name: host-root
           mountPath: /host
+          readOnly: true  # Add read-only to prevent unintentional host changes
       volumes:
       - name: docker-socket
         hostPath:
           path: /var/run/docker.sock
+          type: Socket  # Specify type to enforce correct usage
       - name: host-root
         hostPath:
           path: /
+          type: Directory  # Specify type to avoid unintended mount behaviors
