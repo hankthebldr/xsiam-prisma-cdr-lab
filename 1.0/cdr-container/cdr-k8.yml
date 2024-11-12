@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: poc-detection-container
+  name: panw-cdr-k8
   namespace: insecure-container-scenarios
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: poc-detection
@@ -14,7 +14,7 @@ spec:
         app: poc-detection
     spec:
       containers:
-      - name: detection-container
+      - name: panw-cdr-container
         image: hreed014/cdr-xsiam-pc
         securityContext:
           runAsUser: 0

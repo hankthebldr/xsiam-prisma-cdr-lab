@@ -11,13 +11,12 @@ RUN apt-get update && \
     apt-get install -y curl bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the malicious script from the repository
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh /opt/malicous-container.sh
-ADD 
+# Copy the malicious script from the repository and download to the tmp director
+ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/pawn-cdr-container.sh /tmp/panw-cd-container.sh
 
-# Make the script executable
-RUN chmod +x /opt/malicous-container.sh
+# Make the script executable - executing from the TMP directory 
+RUN chmod +x /tmp/panw-cdr-container.sh
 
 # Run the script
-CMD ["/bin/bash", "/opt/malicous-container.sh"
+CMD ["/bin/bash", "/tmp/panw-cdr-container.sh"]
 

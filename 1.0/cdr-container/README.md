@@ -1,7 +1,8 @@
-# Cortex XDR Malicous Container
+# PANW CDR Container
 
-## Malicous Containers
-* 
+## Guide 
+Located within this directory /cdr-container/dockerfile
+
 
 
 ## Working Tasks 

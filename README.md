@@ -1,4 +1,4 @@
-# Cloud Detection and Respoinse 1.0
+# CDR 1.0 
 
 
 
