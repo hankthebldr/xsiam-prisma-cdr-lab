@@ -1,4 +1,4 @@
-# Dockerfile to run and execute the malicous-container.sh script inside a container
+# Dockerfile to run and execute the optimized containerized script inside a container
 
 # Use a base image that includes a shell environment
 FROM ubuntu:20.04
@@ -8,15 +8,20 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update the package list and install necessary packages
 RUN apt-get update && \
-    apt-get install -y curl bash && \
+    apt-get install -y curl wget bash iputils-ping nmap cron && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the malicious script from the repository
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh /opt/malicous-container.sh
+# Create working directory for script execution
+WORKDIR /opt/containerized_testing
+
+# Copy the optimized script into the container
+ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh /opt/containerized_testing/malicous-container.sh
 
 # Make the script executable
-RUN chmod +x /opt/malicous-container.sh
+RUN chmod +x /opt/containerized_testing/malicous-container.sh
+
+# Add permissions to the /opt directory
+RUN chmod -R 755 /opt
 
 # Run the script
-CMD ["/bin/bash", "/opt/malicous-container.sh"
-
+CMD ["/bin/bash", "/opt/containerized_testing/optimized-container-script.sh"]
