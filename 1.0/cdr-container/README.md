@@ -1,18 +1,12 @@
 # PANW CDR Container
 
-## Guide 
+## 
 Located within this directory /cdr-container/dockerfile
 
 
 
+
 ## Working Tasks 
-
-[X] test malicous contaienr script 
-[X] Create dockerfile image 
-[X] build container locally 
-[X] test image locally 
-
-
 
 ## Dockerhub 
 

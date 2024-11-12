@@ -1,4 +1,4 @@
-# Dockerfile to run and execute the malicous-container.sh script inside a container
+# Dockerfile to run and execute the malicious-container.sh script inside a container
 
 # Use a base image that includes a shell environment
 FROM ubuntu:20.04
@@ -11,12 +11,17 @@ RUN apt-get update && \
     apt-get install -y curl bash && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the malicious script from the repository and download to the tmp director
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/pawn-cdr-container.sh /tmp/panw-cd-container.sh
+# Create a working directory for scripts
+WORKDIR /tmp
 
-# Make the script executable - executing from the TMP directory 
-RUN chmod +x /tmp/panw-cdr-container.sh
+# Copy the malicious script from the repository and download to the /tmp directory
+ADD https://github.com/hankthebldr/xsiam-prisma-cdr-lab/blob/1.0/1.0/cdr-container/panw-cdr-container.sh ./panw-cdr-container.sh
 
-# Run the script
-CMD ["/bin/bash", "/tmp/panw-cdr-container.sh"]
+# Verify the integrity of the script (This step is a good practice for security, although it requires a checksum to compare)
+# RUN echo "checksum_value_here  panw-cdr-container.sh" | sha256sum -c -
 
+# Make the script executable
+RUN chmod +x ./panw-cdr-container.sh
+
+# Run the script when the container starts
+CMD ["/bin/bash", "./panw-cdr-container.sh"]
