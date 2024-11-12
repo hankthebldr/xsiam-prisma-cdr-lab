@@ -1,1 +1,0 @@
-(https://github.com/jimmy-ly00/Ransomware-PoC)

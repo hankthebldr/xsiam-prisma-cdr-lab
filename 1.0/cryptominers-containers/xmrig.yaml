@@ -14,5 +14,3 @@ spec: # the spec section defines what container will be called in the kuberentes
     name: miner-threat
     resources: {}
   dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
