@@ -13,7 +13,6 @@ RUN apt-get update && \
 
 # Copy the malicious script from the repository
 ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/malicous-container/malicous-container.sh /opt/malicous-container.sh
-ADD 
 
 # Make the script executable
 RUN chmod +x /opt/malicous-container.sh
