@@ -1,11 +1,14 @@
+# XMRIG Single container detection senario 
 apiVersion: v1
 kind: Pod
 metadata:
   creationTimestamp: null
   labels:
     run: miner-threat
+    app: xmrig-miner
+    version: 1
   name: xmrig-miner-container
-spec:
+spec: # the spec section defines what container will be called in the kuberentes deployment 
   containers:
   - image: zsco/xmrig-docker:latest
     name: miner-threat

