@@ -3,7 +3,7 @@
 # The entire process runs inside a Docker container for enhanced security.
 
 # Step 1: Set Up Environment Variables and Directories
-WORK_DIR="/tmp/containerized_testing"
+WORK_DIR="/opt/containerized_testing"
 DOWNLOAD_DIR="$WORK_DIR/downloads"
 
 mkdir -p $DOWNLOAD_DIR
