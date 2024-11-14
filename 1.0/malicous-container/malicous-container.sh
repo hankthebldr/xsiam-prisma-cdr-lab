@@ -29,22 +29,7 @@ echo "[+] Running the enumeration script in a Docker container..."
 sh $DOWNLOAD_DIR/enum_script.sh
 sleep 3
 
-# SENARIO -- WILDFIRE LOCAL ANALYSIS 
-# Step 2: Download Sample Files from WildFire for Testing Purposes
-# echo "[+] Downloading WildFire test samples..."
-# for sample in pe apk macos elf; do
-#  if command -v wget >/dev/null 2>&1; then
-#    wget https://wildfire.paloaltonetworks.com/publicapi/test/${sample} -O $DOWNLOAD_DIR/${sample}_sample
-#  elif command -v curl >/dev/null 2>&1; then
-#    curl -o $DOWNLOAD_DIR/${sample}_sample https://wildfire.paloaltonetworks.com/publicapi/test/${sample}
-#  fi;
-#sleep 7 
 
-# Step 3: Make the Downloaded Samples Executable
-#echo "[+] Making the downloaded samples executable..."
-#chmod +x $DOWNLOAD_DIR/*_sample
-
-# SENARIO --- LINUX MALWARE 
 # STEP 1 -- Ransomware, Back Door, Conti 
 echo "[+] Downloading C2 and Ransomware samples..."
 # Step 1 - Unix Backdoor Senario 
