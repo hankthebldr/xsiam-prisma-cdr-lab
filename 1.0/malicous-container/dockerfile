@@ -1,27 +1,14 @@
-# Dockerfile to run and execute the optimized containerized script inside a container
+# Use the BusyBox base image
+FROM busybox:latest
 
-# Use a base image that includes a shell environment
-FROM ubuntu:20.04
-
-# Set environment variables to minimize interaction during installation
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Update the package list and install necessary packages
-RUN apt-get update && \
-    apt-get install -y curl wget bash iputils-ping nmap cron && \
-    rm -rf /var/lib/apt/lists/*
-
-# Create working directory for script execution
+# Create a working directory for script execution
 WORKDIR /tmp/
 
-# Copy the optimized script into the container
-ADD https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh /tmp/malicous-container.sh
+# Use wget (available in BusyBox) to download the script during runtime
+RUN wget -O /tmp/malicous-container.sh https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/1.0/malicous-container/malicous-container.sh
 
 # Make the script executable
 RUN chmod +x /tmp/malicous-container.sh
 
-# Add permissions to the /opt directory
-RUN chmod -R 755 /tmp
-
-# Run the script
-CMD ["/bin/bash", "/tmp/malicous-container.sh"]
+# Run the script using BusyBox's shell
+CMD ["/bin/sh", "/tmp/malicous-container.sh"]
