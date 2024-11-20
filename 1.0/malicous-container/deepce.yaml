@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-deepce
+spec:
+  containers:
+  - name: busybox
+    image: busybox:latest
+    command: ["sh", "-c", "wget -O - https://github.com/stealthcopter/deepce/raw/main/deepce.sh | sh"]
+  restartPolicy: Never
