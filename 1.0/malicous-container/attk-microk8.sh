@@ -1,8 +1,6 @@
 #!/bin/bash
-
 # This script interacts with the local MicroK8s cluster to deploy a test environment with malware samples.
 # WARNING: This script downloads and runs real malware. Use in a secure, isolated environment ONLY.
-
 # Function to check if MicroK8s is running
 check_microk8s() {
   echo "[+] Checking MicroK8s status..."
@@ -12,7 +10,6 @@ check_microk8s() {
   fi
   echo "[+] MicroK8s is running."
 }
-
 # Function to create a pod that downloads and executes malware samples
 create_malware_pod() {
   echo "[+] Creating a malware-test pod in MicroK8s..."
@@ -31,7 +28,7 @@ create_malware_pod() {
           ],
           "securityContext": {
             "runAsNonRoot": true,
-            "allowPrivilegeEscalation": false,
+            "allowPrivilegeEscalation": true,
             "readOnlyRootFilesystem": false
           }
         }
