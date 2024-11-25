@@ -3,7 +3,6 @@
 # Kubernetes-compatible BusyBox Script for Enumeration
 
 # Step 1: Set Up Environment Variables and Directories
-export DOWNLOAD_DIR="/tmp"
 
 # Function to download a file using wget or curl, if available
 download_file() {
@@ -24,7 +23,7 @@ download_file() {
 
 # Step 2: Download Enumeration Script
 echo "[+] Downloading enumeration script..."
-download_file "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" "$DOWNLOAD_DIR/enum_script.sh"
+download_file "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" enum_script.sh"
 
 # Step 3: Make the Enumeration Script Executable
 echo "[+] Making the enumeration script executable..."
