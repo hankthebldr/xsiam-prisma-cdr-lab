@@ -1,6 +1,7 @@
 #!/bin/bash
 # This script interacts with the local MicroK8s cluster to deploy a test environment with malware samples.
 # WARNING: This script downloads and runs real malware. Use in a secure, isolated environment ONLY.
+# TODO configure the escapable container within the microk8s cluster --- how to make the CGO/CMD execution to assume a role 
 # Function to check if MicroK8s is running
 
 check_microk8s() {

