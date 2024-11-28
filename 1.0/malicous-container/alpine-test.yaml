@@ -1,0 +1,14 @@
+kind: Pod
+metadata:
+  name: alpine-persistent
+  labels:
+    app: alpine-test
+spec:
+  containers:
+  - name: alpine
+    image: alpine:latest
+    command: ["sh", "-c", "while true; do sleep 3600; done"]
+    stdin: true
+    tty: true
+  restartPolicy: Always
+EOF

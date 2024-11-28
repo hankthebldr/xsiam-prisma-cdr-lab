@@ -1,5 +1,5 @@
-# Use the BusyBox base image
-FROM busybox:latest
+# alpin shell enviorent will support eh shell execurables 
+FROM alpine:latet
 
 # Create a working directory for script execution
 WORKDIR /tmp/

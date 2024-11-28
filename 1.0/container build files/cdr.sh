@@ -13,16 +13,20 @@ check_microk8s() {
   echo "[+] MicroK8s is running."
 }
 #  Function to download the required containers to the local server 
-download_containers () 
-  echo "[+] Donwloadin busy-box containers"
-  if 
 
 microk8s kubectl exec -it podname -- sh 
+
+# Function to exec into the container
+exec_into_container() {
+  POD_NAME=$1
+  echo "Executing into the container ${POD_NAME}..."
+  microk8s kubectl exec -it ${POD_NAME} -- /bin/bash
+}
 
 
 
 # Main script execution
 check_microk8s
-
+exec_into_container
 
 
