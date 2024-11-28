@@ -1,3 +1,4 @@
+apiVersion: v1
 kind: Pod
 metadata:
   name: alpine-persistent
@@ -11,4 +12,3 @@ spec:
     stdin: true
     tty: true
   restartPolicy: Always
-EOF
