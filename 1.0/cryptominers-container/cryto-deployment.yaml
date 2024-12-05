@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: cryto-cdr
   labels:
-    app: cryptominer
-    version: 1
+    app: cryptomineer
 spec:
   replicas: 1
   selector:

