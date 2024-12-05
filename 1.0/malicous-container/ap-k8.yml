@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-pod
+  labels:
+    app: alpine
+spec:
+  containers:
+  - name: alpine
+    image: alpine:latest
+    command: ["/bin/sh", "-c", "wget -q https://example.com/package.tar.gz -O /tmp/package.tar.gz && sleep 3600"]

