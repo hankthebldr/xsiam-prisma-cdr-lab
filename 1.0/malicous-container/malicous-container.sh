@@ -83,7 +83,7 @@ apk add --no-cache gcc g++
 apk add --no-cache clang llvm
 
 ## donload address list 
-wget https://gist.githubusercontent.com/jgamblin/62fadd8aa321f7f6a482912a6a317ea3/raw/33c6752125188cfdacdeee3f4fd6e01909e50eef/urls.txt -0 url.txt 
+wget https://gist.githubusercontent.com/jgamblin/62fadd8aa321f7f6a482912a6a317ea3/raw/33c6752125188cfdacdeee3f4fd6e01909e50eef/urls.txt -O url.txt 
 
 ### install nmap  
 apk add nmap 
