@@ -87,6 +87,11 @@ wget https://gist.githubusercontent.com/jgamblin/62fadd8aa321f7f6a482912a6a317ea
 
 ### install nmap  
 apk add nmap 
+apk add tor 
+apk add socat 
+apk add clean 
+
+###
 nmap -iL url.txt 
 
 
