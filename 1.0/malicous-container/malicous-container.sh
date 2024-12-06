@@ -75,9 +75,10 @@ sleep 3
 
 # Execution of Malware (suppress errors with `|| true`)
 echo "[+] Calling malware executables"
-./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
-./conti.sh || true 
-./c2.sh || true 
+#[TODO] Error handeling in this - nil pointer reference in go library 
+#./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
+#./conti.sh || true 
+#./c2.sh || true 
 
 ## RANSOMWARE POC 
 git clone https://github.com/jimmy-ly00/Ransomware-PoC

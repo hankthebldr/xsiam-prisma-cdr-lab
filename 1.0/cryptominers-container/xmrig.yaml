@@ -8,6 +8,7 @@ metadata:
   name: xmrig-miner-container
 spec: # the spec section defines what container will be called in the kuberentes deployment 
   containers:
+  #TODO Determine the correct repository that will start the container within the shell and make the network connecitons 
   - image: metal3d/xmrig
     name: miner-threat
     resources: {}

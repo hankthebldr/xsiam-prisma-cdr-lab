@@ -9,3 +9,5 @@
     - DNS monitoring bypass
     - Delete files & Clear shell history 
     - ADD IOC/files and process https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/
+
+[ ] Create crypto-miner embeded jobs
