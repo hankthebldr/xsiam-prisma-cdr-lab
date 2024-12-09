@@ -5,7 +5,6 @@
 # Update Alpine package manager
 apk update
 apk upgrade
-
 # Network scanning tools
 echo "[+] Adding Network Scanning Tools" 
 apk add nmap tor socat
