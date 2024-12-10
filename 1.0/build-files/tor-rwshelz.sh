@@ -1,4 +1,5 @@
 #!/usr/bin/env sho
+# https://github.com/tpaphysics/tor-reverse-shell/tree/main
 
 # Optional environment variables that can be set before running the script:
 : "${TOR_TARGET_HOST:=my.onion.host}"

