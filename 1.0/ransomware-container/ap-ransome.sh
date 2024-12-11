@@ -1,4 +1,3 @@
-
 #!/usr/bin/env sh
 
 GREEN="\033[1;32m"
