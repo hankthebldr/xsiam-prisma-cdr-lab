@@ -160,7 +160,7 @@ echo "[+] Calling malware executables"
 #./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 || true 
 ./conti.sh || true 
 ./05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 
-# ./c2.sh || true 
+./c2.sh 
 
 
 # Senario 5 - Scanning and Discovery on network 

