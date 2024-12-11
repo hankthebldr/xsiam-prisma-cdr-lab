@@ -11,7 +11,6 @@ ITERATIONS="${ITERATIONS:-0}"   # 0 means infinite loop
 COUNTER=0
 
 echo -e "${BLUE}[INFO] Starting MITRE ATT&CK TTP simulation in container environment${RESET}"
-
 # Helper function to randomize sleep between actions
 random_sleep() {
     SECS=$((RANDOM % 5 + 2))
