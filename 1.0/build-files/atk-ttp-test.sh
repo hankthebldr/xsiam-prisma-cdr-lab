@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 # MITRE ATT&CK TTP Simulation Script - EXTENDED
 # This script simulates a wide array of adversarial behaviors in a containerized environment.
 #

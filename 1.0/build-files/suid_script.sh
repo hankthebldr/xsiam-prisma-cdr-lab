@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # WARNING: For educational purposes only, in a controlled environment.
 # Running SUID attack simulations in a Kubernetes cluster is typically not recommended.
 

