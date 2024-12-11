@@ -1,5 +1,5 @@
+#!/bin/bash
 # Additional Step: Attempt Container Escape (Educational Purposes)
-
 # Scenario 1: Check for Docker Socket Access
 if [ -S /var/run/docker.sock ]; then
   echo "[!] Docker socket found. Attempting escape using Docker client..."
