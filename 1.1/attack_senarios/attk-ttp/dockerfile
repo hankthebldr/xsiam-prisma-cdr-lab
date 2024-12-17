@@ -1,0 +1,22 @@
+# Use a base image that includes a shell environment
+FROM ubuntu:20.04
+
+# Set environment variables to minimize interaction during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update the package list and install necessary packages
+RUN apt-get update && \
+    apt-get install -y curl bash && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download scripts from GitHub
+RUN curl -o /malicous-container
+
+# Make the scripts executable
+RUN chmod +x /malicous-container.sh /container-ttp-netgen.sh
+
+# Execute as root
+USER root
+
+# Set the default command to execute all scripts in sequence
+CMD ["/bin/bash", "-c", "/malicous-container.sh && /container-ttp-netgen.sh"]

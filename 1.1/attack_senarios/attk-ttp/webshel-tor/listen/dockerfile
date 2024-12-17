@@ -1,0 +1,27 @@
+# Base Image
+FROM debian:latest
+
+# Set environment variables to minimize interaction during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install -y tor socat && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create the directories required for the Tor hidden service
+RUN mkdir -p /var/lib/tor/hidden_service && chown debian-tor:debian-tor /var/lib/tor/hidden_service
+
+# Add the Tor configuration file
+RUN echo 'HiddenServiceDir /var/lib/tor/hidden_service/' > /etc/tor/torrc && \
+    echo 'HiddenServicePort 80 127.0.0.1:12345' >> /etc/tor/torrc
+
+# Expose the necessary port for Tor
+EXPOSE 80
+
+# Start Tor and create a listener using socat, with logging forwarded to stdout
+CMD tor & \
+    sleep 10 && \
+    echo "[+] Tor hidden service started" && \
+    socat TCP4-LISTEN:12345,fork EXEC:/bin/bash
+

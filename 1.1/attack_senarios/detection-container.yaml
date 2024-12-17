@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detection-container-deployment
+  labels:
+    app: detection-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: detection-container
+  template:
+    metadata:
+      labels:
+        app: detection-container
+    spec:
+      containers:
+        - name: detection-container
+          image: ghcr.io/crowdstrike/detection-container:latest
+          ports:
+            - containerPort: 8080  # Adjust if the container uses a different port
+          env:
+            - name: EXAMPLE_ENV_VARIABLE
+              value: "example_value"  # Replace with real environment variables as needed
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: detection-container-service
+  labels:
+    app: detection-container
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080  # Adjust if the container uses a different port
+  selector:
+    app: detection-container

@@ -1,0 +1,70 @@
+#This creates the name space in which all the resources bellow will be deployed
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: carlos
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJsaXphdHdpc3Rsb2NrIiwicGFzc3dvcmQiOiJQYSQkd29yZDEhIiwiZW1haWwiOiJsbGVjaHRtYW5AcGFsb2FsdG9uZXR3b3Jrcy5jb20iLCJhdXRoIjoiYkdsNllYUjNhWE4wYkc5amF6cFFZU1FrZDI5eVpERWgifX19
+kind: Secret
+metadata:
+  name: csa-sanity-secrets
+  namespace: carlos
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carlos-centos-csa
+  namespace: carlos
+  labels:
+    app: carlos-centos-csa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carlos-centos-csa
+  template:
+    metadata:
+      labels:
+        app: carlos-centos-csa
+    spec:
+      imagePullSecrets:
+      - name: csa-sanity-secrets
+      nodeSelector:
+        kubernetes.io/os: "linux"
+      containers:
+      - name: carlos-centos-csa
+        image: lizatwistlock/csa_security_events:centos_latest
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;"]
+        imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carlos-ubuntu-csa
+  namespace: carlos
+  labels:
+    app: carlos-ubuntu-csa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carlos-ubuntu-csa
+  template:
+    metadata:
+      labels:
+        app: carlos-ubuntu-csa
+    spec:
+      imagePullSecrets:
+      - name: csa-sanity-secrets
+      nodeSelector:
+        kubernetes.io/os: "linux"
+      containers:
+      - name: carlos-centos-csa
+        image: lizatwistlock/csa_security_events:centos_latest
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;"]
+        imagePullPolicy: Always

