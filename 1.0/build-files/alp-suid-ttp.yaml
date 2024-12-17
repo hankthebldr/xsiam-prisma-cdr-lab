@@ -1,0 +1,31 @@
+      - name: suid-detection-container
+        image: ubuntu:20.04
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - AUDIT_CONTROL
+        volumeMounts:
+          - name: host
+            mountPath: /host
+        command:
+          - /bin/bash
+          - -c
+          - |
+            apt-get update && \
+            apt-get install -y auditd inotify-tools wget && \
+            mkdir -p /mnt/shared && \
+            # Bind the host's /tmp directory as the shared directory inside the container
+            mount --bind /host/tmp /mnt/shared && \
+            # Download the SUID detection script (update URL if needed)
+            wget -q https://raw.githubusercontent.com/hankthebldr/xsiam-prisma-cdr-lab/refs/heads/alpha/1.0/build-files/suid_script.sh -O /usr/local/bin/suid_script.sh && \
+            chmod +x /usr/local/bin/suid_script.sh && \
+            /usr/local/bin/suid_script.sh detect && \
+            tail -f /dev/null
+
+      volumes:
+        - name: host
+          hostPath:
+            path: /
+            type: Directory

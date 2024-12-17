@@ -6,7 +6,7 @@ metadata:
     app: alpine-test
 spec:
   containers:
-  - name: alpine
+  - name: alpine-exe
     image: alpine:latest
     command: ["sh", "-c", "while true; do sleep 3600; done"]
     stdin: true

@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: peirates-runner
+  labels:
+    app: peirates
+spec:
+  containers:
+    - name: peirates
+      image: bustakube/alpine-peirates:1.1.16
+      command: ["/bin/sh", "-c", "sleep 3600"]
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "250m"
+          memory: "128Mi"
+      securityContext:
+        allowPrivilegeEscalation: true
+        privileged: true
+  restartPolicy: Never
+#[ ] TODO -  need ot idntify the results - Bustakube has some dece t recousrs 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: peirates-builder
+  labels:
+    app: peirates-builder
+spec:
+  containers:
+    - name: builder
+      image: alpine:latest
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          apk add --no-cache \
+            git \
+            bash \
+            curl \
+            go \
+            gcc \
+            musl-dev \
+            make \
+            build-base &&
+          export GOPATH=/go &&
+          mkdir -p $GOPATH &&
+          cd $GOPATH &&
+          go install github.com/inguardians/peirates@latest &&
+          go get -v "k8s.io/kubectl/pkg/cmd" "github.com/aws/aws-sdk-go" &&
+          cd $GOPATH/pkg/mod/github.com/inguardians/peirates@v*/scripts &&
+          ./build.sh &&
+          echo "Peirates built successfully!" &&
+          sleep 3600
+      volumeMounts:
+        - name: peirates-build-output
+          mountPath: /output
+    volumes:
+      - name: peirates-build-output
+        emptyDir: {}
+  restartPolicy: Never
