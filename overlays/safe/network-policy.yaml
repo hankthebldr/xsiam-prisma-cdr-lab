@@ -1,0 +1,79 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+  namespace: cdr-lab
+  labels:
+    cdr-lab/policy-type: security
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  # Allow DNS resolution
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # Allow connection to sinkhole services in same namespace
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: cdr-lab
+    ports:
+    - protocol: TCP
+      port: 3333  # Crypto pool sinkhole
+    - protocol: TCP
+      port: 4444  # Reverse shell sinkhole
+    - protocol: TCP
+      port: 8080  # HTTP sinkhole
+  # Allow intra-namespace communication
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: cdr-lab
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-sinkhole-ingress
+  namespace: cdr-lab
+  labels:
+    cdr-lab/policy-type: security
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: sinkhole
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow all pods in namespace to connect to sinkhole
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: cdr-lab
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-cross-scenario-communication
+  namespace: cdr-lab
+  labels:
+    cdr-lab/policy-type: security
+spec:
+  podSelector:
+    matchExpressions:
+    - key: cdr-lab/scenario-id
+      operator: Exists
+  policyTypes:
+  - Ingress
+  ingress:
+  # Only allow communication within the same scenario
+  - from:
+    - podSelector:
+        matchLabels:
+          cdr-lab/scenario-id: "{{ scenario-id }}"

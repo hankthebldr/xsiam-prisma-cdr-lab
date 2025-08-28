@@ -1,0 +1,159 @@
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags used by Kubernetes
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: debug-statements
+
+  # Shell script linting
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.5
+    hooks:
+      - id: shellcheck
+        args: ['-e', 'SC1091']  # Ignore sourcing issues for common.sh
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        args: [-d, relaxed]
+        files: \.(yaml|yml)$
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.35.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+
+  # Security - detect secrets
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: ^tests/.*test.*\.yaml$
+
+  # Typos
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.16.5
+    hooks:
+      - id: typos
+
+  # Docker and container security
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        files: ^images/.*/Dockerfile.*
+
+  # Kubernetes manifest validation
+  - repo: local
+    hooks:
+      - id: validate-k8s-manifests
+        name: Validate Kubernetes Manifests
+        entry: bash -c 'for f in "$@"; do kubectl apply --dry-run=client -f "$f" >/dev/null; done' --
+        language: system
+        files: \.(yaml|yml)$
+        exclude: '^(\.pre-commit-config\.yaml|\.github/.*\.yml)$'
+        pass_filenames: true
+
+  # Custom CDR Lab validations
+  - repo: local
+    hooks:
+      - id: scenario-metadata-check
+        name: Check Scenario Metadata
+        entry: bash -c '
+          for scenario in scenarios/v1.0/*/; do
+            if [[ -d "$scenario" ]]; then
+              scenario_name=$(basename "$scenario")
+              if [[ ! -f "$scenario/metadata.yaml" ]]; then
+                echo "ERROR: Missing metadata.yaml for scenario: $scenario_name"
+                exit 1
+              fi
+              if [[ ! -f "$scenario/README.md" ]]; then
+                echo "WARNING: Missing README.md for scenario: $scenario_name"
+              fi
+              if [[ ! -f "$scenario/kustomization.yaml" ]]; then
+                echo "ERROR: Missing kustomization.yaml for scenario: $scenario_name" 
+                exit 1
+              fi
+              # Check required metadata fields
+              required_fields="id name version risk mitre_techniques"
+              for field in $required_fields; do
+                if ! grep -q "^$field:" "$scenario/metadata.yaml"; then
+                  echo "ERROR: Missing required field $field in $scenario/metadata.yaml"
+                  exit 1
+                fi
+              done
+            fi
+          done
+          echo "All scenario metadata validated successfully"
+        '
+        language: system
+        files: scenarios/.*/(metadata\.yaml|kustomization\.yaml|README\.md)$
+        pass_filenames: false
+
+      - id: safety-check
+        name: Safety Configuration Check
+        entry: bash -c '
+          echo "Checking safety configurations..."
+          
+          # Check that safe overlay exists and has proper security
+          if [[ ! -f "overlays/safe/kustomization.yaml" ]]; then
+            echo "ERROR: Missing safe overlay configuration"
+            exit 1
+          fi
+          
+          # Check for dangerous patterns in job manifests
+          for job_file in scenarios/*/job.yaml scenarios/*/*/job.yaml; do
+            if [[ -f "$job_file" ]]; then
+              if grep -q "privileged.*true" "$job_file"; then
+                echo "WARNING: Found privileged container in $job_file - ensure unsafe mode protection"
+              fi
+              if grep -q "hostPath" "$job_file"; then
+                echo "WARNING: Found hostPath mount in $job_file - ensure unsafe mode protection"
+              fi
+              if grep -q "hostNetwork.*true" "$job_file"; then
+                echo "WARNING: Found host networking in $job_file - ensure unsafe mode protection"
+              fi
+            fi
+          done
+          
+          echo "Safety check completed"
+        '
+        language: system
+        files: \.(yaml|yml)$
+        pass_filenames: false
+
+      - id: script-executable-check
+        name: Check Script Executability
+        entry: bash -c '
+          for script in scripts/*.sh hack/*.sh; do
+            if [[ -f "$script" && ! -x "$script" ]]; then
+              echo "Making $script executable..."
+              chmod +x "$script"
+            fi
+          done
+        '
+        language: system
+        files: scripts/.*\.sh$|hack/.*\.sh$
+        pass_filenames: false
+
+# Configuration for specific tools
+default_language_version:
+  python: python3
+
+# Skip some hooks in CI
+ci:
+  skip: [validate-k8s-manifests]

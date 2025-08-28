@@ -2,11 +2,11 @@
 # Configured for a Busybox/Alpine container by hreed@paloaltonetworks.com
 # This script simulates various malicious activities for detection and response testing.
 
-# CONTAINER UPDATE 
-# Update Alpine package manager
+# Container Updates
+echo "[+] Updating container packages"
 apk update
 apk upgrade
-# Network scanning tools
+# Network scanning tools 
 echo "[+] Adding Network Scanning Tools" 
 apk add nmap tor socat
 apk add curl

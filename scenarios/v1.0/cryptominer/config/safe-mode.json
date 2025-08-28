@@ -1,0 +1,61 @@
+{
+  "autosave": true,
+  "background": false,
+  "colors": true,
+  "randomx": {
+    "init": -1,
+    "mode": "auto"
+  },
+  "cpu": {
+    "enabled": true,
+    "huge-pages": false,
+    "hw-aes": null,
+    "priority": null,
+    "memory-pool": false,
+    "yield": true,
+    "max-threads-hint": 1,
+    "asm": true,
+    "argon2-impl": null,
+    "astrobwt-max-size": 550,
+    "astrobwt-avx2": false,
+    "cn/0": false,
+    "cn-lite/0": false
+  },
+  "opencl": {
+    "enabled": false
+  },
+  "cuda": {
+    "enabled": false
+  },
+  "pools": [
+    {
+      "algo": null,
+      "coin": "monero",
+      "url": "sinkhole.cdr-lab.svc.cluster.local:3333",
+      "user": "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A",
+      "pass": "lab-worker",
+      "rig-id": null,
+      "nicehash": false,
+      "keepalive": false,
+      "enabled": true,
+      "tls": false,
+      "tls-fingerprint": null,
+      "daemon": false,
+      "socks5": null,
+      "self-select": null
+    }
+  ],
+  "print-time": 60,
+  "health-print-time": 60,
+  "retries": 5,
+  "retry-pause": 5,
+  "syslog": false,
+  "tls": {
+    "enabled": false
+  },
+  "user-agent": null,
+  "verbose": 1,
+  "watch": false,
+  "pause-on-battery": false,
+  "pause-on-active": false
+}

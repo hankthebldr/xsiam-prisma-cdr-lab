@@ -1,0 +1,145 @@
+id: cryptominer
+name: Cryptocurrency Mining Simulation
+version: "1.0"
+description: Simulates cryptocurrency mining malware for detection and response training
+author: CDR Lab Team
+
+# MITRE ATT&CK mapping
+mitre_techniques:
+  - T1496  # Resource Hijacking
+  - T1055  # Process Injection
+  - T1059.004  # Command and Scripting Interpreter: Unix Shell
+  - T1027  # Obfuscated Files or Information
+
+# Risk assessment
+risk: low
+risk_description: Safe simulation with controlled CPU usage and network sinkhole
+
+# Prerequisites
+prerequisites:
+  - Kubernetes cluster with metrics server
+  - cdr-lab namespace with network policies
+  - Sufficient CPU resources for simulation
+
+# Scenario details
+attack_vectors:
+  - Cryptocurrency mining software deployment
+  - Resource consumption monitoring
+  - Network communication to mining pools
+  - Process hiding techniques (unsafe mode only)
+
+# Expected findings and telemetry
+expected_findings:
+  indicators:
+    - High CPU utilization patterns
+    - Network connections to mining pool addresses
+    - Cryptocurrency miner process execution
+    - Suspicious resource consumption
+  
+  logs:
+    - Container start events with mining software
+    - Network connection attempts to pool addresses
+    - Resource limit violations (if configured)
+    - Process execution logs
+  
+  metrics:
+    - CPU usage spikes
+    - Memory consumption patterns
+    - Network throughput to external destinations
+    - Container restart frequencies
+
+# Detection opportunities
+detection_rules:
+  - name: "Cryptocurrency Mining Process Detection"
+    type: "Process"
+    pattern: "xmrig|minerd|cpuminer"
+  
+  - name: "Mining Pool Network Connection"
+    type: "Network"
+    pattern: "*.supportxmr.com|*.minergate.com"
+  
+  - name: "High CPU Usage Anomaly"
+    type: "Resource"
+    threshold: "cpu > 80% for 5m"
+
+# Safety controls
+safety:
+  safe_mode:
+    - CPU usage limited to 10% of node capacity
+    - Network traffic directed to in-cluster sinkhole
+    - No actual cryptocurrency mining occurs
+    - Automatic cleanup after 10 minutes
+  
+  unsafe_mode:
+    - May connect to real mining pools (user configured)
+    - Higher CPU usage allowed (up to configured limits)
+    - External network connections possible
+    - Manual cleanup required
+
+# Cleanup information
+cleanup:
+  automatic:
+    - TTL cleanup after job completion
+    - Resource limit enforcement prevents runaway processes
+  
+  manual:
+    - kubectl delete job cryptominer-job -n cdr-lab
+    - kubectl delete configmap cryptominer-config -n cdr-lab
+  
+  verification:
+    - Check CPU metrics return to baseline
+    - Verify no persistent mining processes
+    - Confirm network connections closed
+
+# References and learning resources
+references:
+  - url: "https://attack.mitre.org/techniques/T1496/"
+    title: "MITRE ATT&CK - Resource Hijacking"
+  
+  - url: "https://unit42.paloaltonetworks.com/malware-used-by-rocke-group/"
+    title: "Palo Alto Unit 42 - Rocke Group Analysis"
+  
+  - url: "https://www.crowdstrike.com/blog/cryptojacking-continues-to-evolve/"
+    title: "CrowdStrike - Cryptojacking Evolution"
+
+# Simulation variants
+variants:
+  basic:
+    description: "Simple XMRig mining simulation"
+    complexity: low
+    
+  advanced:
+    description: "Multi-stage deployment with persistence"
+    complexity: medium
+    
+  stealth:
+    description: "Process hiding and anti-detection techniques" 
+    complexity: high
+    unsafe_only: true
+
+# Compatible platforms
+platforms:
+  - linux/amd64
+  - linux/arm64
+
+# Resource requirements  
+resources:
+  minimum:
+    cpu: "100m"
+    memory: "128Mi"
+  
+  recommended:
+    cpu: "500m" 
+    memory: "256Mi"
+
+# Lab integration
+integration:
+  siem:
+    - Splunk detection rules included
+    - Elastic Stack queries provided
+    - Custom alerting examples
+  
+  xdr:
+    - Cortex XDR behavioral analysis
+    - Microsoft Sentinel KQL queries
+    - CrowdStrike Falcon hunting queries

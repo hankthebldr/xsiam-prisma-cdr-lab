@@ -1,0 +1,133 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cryptominer-job
+  labels:
+    cdr-lab/attack-type: resource-hijacking
+    cdr-lab/complexity: basic
+spec:
+  # Job will be cleaned up after 600 seconds (10 minutes)
+  ttlSecondsAfterFinished: 600
+  
+  # Don't restart on failure to avoid resource exhaustion
+  backoffLimit: 0
+  
+  # Single execution
+  completions: 1
+  parallelism: 1
+  
+  template:
+    metadata:
+      labels:
+        cdr-lab/workload-type: miner
+        cdr-lab/telemetry: enabled
+    spec:
+      restartPolicy: Never
+      
+      # Security context (will be overridden by safe overlay)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      
+      containers:
+      - name: miner
+        image: metal3d/xmrig:latest
+        
+        # Environment configuration
+        env:
+        - name: POOL_ADDRESS
+          value: "sinkhole.cdr-lab.svc.cluster.local:3333"
+        - name: WALLET_ADDRESS
+          value: "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A"
+        - name: WORKER_NAME
+          value: "lab-worker"
+        - name: THREADS
+          value: "1"
+        - name: SAFE_MODE
+          value: "true"
+        
+        # Command to run the miner
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          echo "Starting CDR Lab Cryptominer Simulation"
+          echo "Mode: Safe (connecting to sinkhole service)"
+          echo "Pool: $POOL_ADDRESS"
+          echo "Worker: $WORKER_NAME"
+          echo "Threads: $THREADS"
+          echo "======================================"
+          
+          # In safe mode, simulate mining activity
+          if [ "$SAFE_MODE" = "true" ]; then
+            echo "SAFE MODE: Simulating mining without actual computation"
+            
+            # Simulate mining startup
+            echo "[$(date)] Starting XMRig simulation..."
+            echo "[$(date)] Connecting to pool $POOL_ADDRESS"
+            echo "[$(date)] Using wallet $WALLET_ADDRESS"
+            
+            # Light CPU activity to generate telemetry
+            counter=0
+            while [ $counter -lt 600 ]; do  # Run for 10 minutes
+              echo "[$(date)] Mining simulation active - round $counter"
+              echo "  -> Simulated hash rate: $((RANDOM % 100 + 50)) H/s"
+              echo "  -> Pool difficulty: $((RANDOM % 1000000 + 500000))"
+              echo "  -> Shares: accepted=$(($counter % 10)), rejected=$((RANDOM % 3))"
+              
+              # Light CPU work to show activity in metrics
+              dd if=/dev/zero of=/tmp/mining-sim bs=1M count=10 2>/dev/null || true
+              rm -f /tmp/mining-sim
+              
+              sleep 1
+              counter=$((counter + 1))
+            done
+            
+            echo "[$(date)] Mining simulation completed"
+          else
+            echo "UNSAFE MODE: Running actual mining software"
+            # This would run real xmrig in unsafe mode
+            /usr/local/bin/xmrig --url=$POOL_ADDRESS --user=$WALLET_ADDRESS --pass=$WORKER_NAME --threads=$THREADS
+          fi
+        
+        # Resource limits
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"  # Limited in safe mode
+          requests:
+            memory: "128Mi" 
+            cpu: "100m"
+        
+        # Security context (will be enhanced by safe overlay)
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false  # Needed for temp files
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+        
+        # Volume mounts for configuration and temp files
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/xmrig
+          readOnly: true
+        - name: temp-volume
+          mountPath: /tmp
+        - name: logs-volume
+          mountPath: /var/log/xmrig
+      
+      volumes:
+      - name: config-volume
+        configMap:
+          name: cryptominer-safe-config
+          defaultMode: 0644
+      - name: temp-volume
+        emptyDir:
+          sizeLimit: 100Mi
+      - name: logs-volume
+        emptyDir:
+          sizeLimit: 50Mi

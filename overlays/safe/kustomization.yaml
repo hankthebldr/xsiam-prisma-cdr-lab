@@ -1,0 +1,86 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Safe overlay - applies security hardening to all scenarios
+metadata:
+  name: safe-overlay
+  annotations:
+    config.kubernetes.io/local-config: "true"
+
+# Common labels applied to all resources
+commonLabels:
+  cdr-lab/lab-mode: safe
+  cdr-lab/version: v1.0
+
+# Common annotations
+commonAnnotations:
+  cdr-lab/safety-level: safe
+  cdr-lab/description: "Safe mode with simulated attacks and security hardening"
+
+# Resources that apply to all safe scenarios
+resources:
+- namespace.yaml
+- network-policy.yaml
+- pod-security.yaml
+
+# Patches applied to all scenarios in safe mode
+patchesStrategicMerge:
+- security-context-patch.yaml
+- resource-limits-patch.yaml
+
+# JSON patches for specific modifications
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+  patch: |-
+    - op: add
+      path: /spec/template/spec/securityContext
+      value:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+    - op: add
+      path: /spec/template/spec/containers/0/securityContext
+      value:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        capabilities:
+          drop:
+          - ALL
+
+- target:
+    group: batch
+    version: v1
+    kind: Job
+  patch: |-
+    - op: add
+      path: /spec/template/spec/securityContext
+      value:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+    - op: add
+      path: /spec/template/spec/containers/0/securityContext
+      value:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        capabilities:
+          drop:
+          - ALL
+    - op: add
+      path: /spec/ttlSecondsAfterFinished
+      value: 300
+
+# Transformers for safe mode
+transformers:
+- safe-transformers.yaml

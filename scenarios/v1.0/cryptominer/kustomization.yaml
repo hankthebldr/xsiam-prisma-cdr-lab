@@ -1,0 +1,59 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: cryptominer-scenario
+  annotations:
+    config.kubernetes.io/local-config: "true"
+
+# Resources for the cryptominer scenario
+resources:
+- job.yaml
+- configmap.yaml
+- networkpolicy.yaml
+
+# Common labels for this scenario
+commonLabels:
+  cdr-lab/scenario-id: cryptominer
+  cdr-lab/mitre-technique: T1496
+  app.kubernetes.io/name: cryptominer
+  app.kubernetes.io/part-of: cdr-lab
+  app.kubernetes.io/version: v1.0
+
+# Common annotations
+commonAnnotations:
+  cdr-lab/description: "Cryptocurrency mining simulation scenario"
+  cdr-lab/risk-level: "low"
+  cdr-lab/author: "CDR Lab Team"
+
+# Namespace for all resources
+namespace: cdr-lab
+
+# Configuration for different modes
+configMapGenerator:
+- name: cryptominer-safe-config
+  files:
+  - config/safe-mode.json
+  - config/mining-script.sh
+  options:
+    labels:
+      cdr-lab/config-type: safe-mode
+
+# Image transformations
+images:
+- name: metal3d/xmrig
+  newTag: latest
+  # In production, use digest: newName: metal3d/xmrig@sha256:abc123...
+
+# Replacements for environment-specific values
+replacements:
+- source:
+    kind: ConfigMap
+    name: cryptominer-safe-config
+    fieldPath: data.pool_address
+  targets:
+  - select:
+      kind: Job
+      name: cryptominer-job
+    fieldPaths:
+    - spec.template.spec.containers.[name=miner].env.[name=POOL_ADDRESS].value
